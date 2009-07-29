@@ -1,0 +1,9 @@
+- remote_form_for(@issue) do |f|
+  = link_to_close new_issue_path
+  = f.hidden_field :user_id
+  = f.error_messages
+  = render :partial => "issues/top_section", :locals => { :f => f }
+  .buttonbar
+    = f.submit "Create Issue"
+    or
+    = link_to_cancel new_issue_path

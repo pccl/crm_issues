@@ -8,6 +8,15 @@ class IssuesController < ApplicationController
   before_filter :set_current_tab, :only => [:index]
 
   def index
+    @issues = Issue.find(:all)
+  end
+
+  def new
+    @issue = Issue.new(:user => @current_user)
+    respond_to do |format|
+      format.js
+      format.xml { render :xml => @issue }
+    end
   end
 
 end

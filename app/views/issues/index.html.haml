@@ -1,2 +1,14 @@
-%p
-  Welcome to the issues
+.title_tools
+  = link_to_inline(:create_issue, new_issue_path)
+
+.title
+  %span#create_issue_title Issues
+.remote#create_issue{ hidden }
+
+.list#issues
+  - if @issues.empty?
+    = render :partial => "common/empty"
+  - else
+    = render :partial => "issue", :collection => @issues
+
+-##paginate= render :partial => "common/paginate"
