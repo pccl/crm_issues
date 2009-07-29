@@ -5,6 +5,8 @@ class CreateIssues < ActiveRecord::Migration
       t.boolean  :bug_resolved, :issue_resolved
       t.integer  :account_id, :user_id
       t.date :due_on
+
+      t.timestamps
     end
   end
 

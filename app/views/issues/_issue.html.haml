@@ -1,2 +1,12 @@
 %li[issue]{ highlightable(dom_id(issue, :tools)) }
-  blah
+  .strip{:class => issue.priority}= issue.priority
+  %div
+    .tools{ invisible, :id => dom_id(issue, :tools) }
+      %small
+        = link_to_edit(issue) + " | "
+        = link_to_delete(issue) + "&nbsp;"
+    = link_to(issue.summary, issue)
+    %tt
+      &ndash;
+      == added #{time_ago_in_words(issue.created_at)} ago by
+      == #{issue.user_id == @current_user.id ? "me" : issue.user.full_name}
