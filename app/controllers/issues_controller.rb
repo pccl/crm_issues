@@ -22,6 +22,25 @@ class IssuesController < ApplicationController
     end
   end
 
+  def edit
+    @issue = Issue.find(params[:id])
+    # FIXME!
+    # The following line throws a TypeError (can't dup NilClass) error.
+    # The subsequent line looks stupid, but it works for now.
+    #@account = @issue.account || Account.new(:user => @current_user)
+    @account = ( Account.find(@issue.account_id) ) || Account.new(:user => @current_user)
+    @accounts = Account.my(@current_user).all(:order => "name")
+    if params[:previous] =~ /(\d+)\z/
+      @previous = Issue.find($1)
+    end
+    respond_to do |format|
+      format.js
+    end
+  rescue ActiveRecord::RecordNotFound
+    @previous ||= $1.to_i
+    respond_to_not_found(:js) unless @issue
+  end
+
   def create
     @issue = Issue.new(params[:issue])
 
