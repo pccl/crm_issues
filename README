@@ -12,4 +12,16 @@ search for issues which correspond to that bug, and mark the bug as
 resolved. These issues are then queued for admin staff to contact 
 each account, after which the issue itself can be marked as resolved.
 
+Installation
+============
 
+Fat Free Issues can be installed by running:
+
+    script/install plugin git://github.com/pccl/fat_free_issues.git
+
+Then run the following commands:
+
+    rake issues:sync
+    rake db:migrate [RAILS_ENV=production]
+
+Then restart your app server.
