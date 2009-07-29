@@ -4,7 +4,7 @@ class CreateIssues < ActiveRecord::Migration
       t.string   :bug_ticket, :summary, :priority
       t.boolean  :bug_resolved, :issue_resolved
       t.integer  :account_id, :user_id
-      t.datetime :due_at
+      t.date :due_on
     end
   end
 

@@ -19,3 +19,12 @@
         %td{ :valign => :top }
           .label Bug ticket:
           = f.text_field :bug_ticket, :style => "width:160px"
+
+    %tr
+      %td{:valign => :top}
+        .label Priority
+        = f.select :priority, [ "low", "minor", "major", "critical" ], { :selected => @issue.priority ? @issue.priority.to_s : "low" }, { :style => "width:324px" }
+      %td= spacer
+      %td{ :valign => :top }
+        .label Due date:
+        = f.text_field :due_on, :value => f.object.due_on ? f.object.due_on.to_s(:mmddyyyy) : "", :style => "width:160px", :autocomplete => :off
