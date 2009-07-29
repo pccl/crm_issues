@@ -41,6 +41,18 @@ class IssuesController < ApplicationController
     respond_to_not_found(:js) unless @issue
   end
 
+  def update
+    @issue = Issue.find(params[:id])
+    respond_to do |format|
+      if @issue.update_with_account(params)
+        # update_sidebar if called_from_index_page?
+        format.js
+      else
+        format.js
+      end
+    end
+  end
+
   def create
     @issue = Issue.new(params[:issue])
 
