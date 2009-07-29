@@ -4,6 +4,8 @@ page.call "crm.flip_form", :create_issue
 if params[:cancel] != "true"
   page[:create_issue].replace_html :partial => "create"
   page.call "crm.set_title", :create_issue
+  page.call "crm.create_or_select_account", request.referer =~ /\/accounts\// || @account.id.blank?
+  page.call "crm.date_select_popup", "issue_due_on"
 else
   page.call "crm.set_title", :create_issue, "Issues"
 end

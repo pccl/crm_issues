@@ -1,0 +1,6 @@
+if @issue.valid?
+  page[:create_issue_arrow].replace_html "&#9658;"
+  page[:create_issue_title].replace_html "Opportunities"
+  page.visual_effect :toggle_blind, :create_issue, :duration => 0.3, :afterFinish => 'function(effect) {effect.element.update("")}'
+else
+end

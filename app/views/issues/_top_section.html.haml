@@ -8,17 +8,19 @@
   %table{ :border => 0, :width => 500, :cellpadding => 0, :cellspacing => 0 }
     %tr
       %td{ :valign => :top }
-        .label Account:
-        = f.text_field :account, :style => "width:324px"
-        -#.label
-          -#Account
-          -#%span#account_selector
-        -#= collection_select :account, :id, @accounts, :id, :name, { :selected => @account.id || 0 }, { :style => "width:330px;display:none;" }
-        -#= a.text_field :name, :style => "width:324px;display:none;"
+        .label
+          Account
+          %span#account_selector
+        - fields_for(@account) do |a|
+          = a.hidden_field :user_id
+          = a.hidden_field :access
+          = a.hidden_field :assigned_to
+          = collection_select :account, :id, @accounts, :id, :name, { :selected => @account.id || 0 }, { :style => "width:330px;display:none;" }
+          = a.text_field :name, :style => "width:324px;display:none;"
         %td= spacer
-        %td{ :valign => :top }
-          .label Bug ticket:
-          = f.text_field :bug_ticket, :style => "width:160px"
+      %td{ :valign => :top }
+        .label Bug ticket:
+        = f.text_field :bug_ticket, :style => "width:160px"
 
     %tr
       %td{:valign => :top}
