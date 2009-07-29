@@ -26,7 +26,8 @@ class IssuesController < ApplicationController
     @issue = Issue.new(params[:issue])
 
     respond_to do |format|
-      if @issue.save
+      # TODO: save_with_account_and_permissions
+      if @issue.save_with_account(params)
         # update_sidebar if called_from_index_page?
         format.js
       else
