@@ -8,7 +8,7 @@ class IssuesController < ApplicationController
   before_filter :set_current_tab, :only => [:index]
 
   def index
-    @issues = Issue.find(:all)
+    @issues = get_issues(:page => params[:page])
   end
 
   def new
@@ -34,5 +34,19 @@ class IssuesController < ApplicationController
         format.js
       end
     end
+  end
+
+  private
+
+  def get_issues(options = { :page => nil, :query => nil })
+    self.current_page = options[:page] if options[:page]
+    self.current_query = options[:query] if options[:query]
+
+    pages = {
+      :page => current_page,
+      :per_page => @current_user.pref[:accounts_per_page]  # TODO: create a :issues_per_page preference
+    }
+
+    Issue.paginate(pages)
   end
 end
