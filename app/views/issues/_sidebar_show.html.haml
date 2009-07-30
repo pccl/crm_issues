@@ -1,0 +1,18 @@
+.panel#summary
+  .caption Issue Summary
+  %li
+    %dt= @issue.priority
+    %tt Priority:
+  %li
+    %dt= @issue.bug_ticket.blank? ? "N/A" : @issue.bug_ticket
+    %tt Bug ticket:
+  %li
+    %dt= @issue.due_on ? @issue.due_on.strftime("%b %e") : "N/A"
+    %tt Due date:
+  %li
+    %dt
+      - if account = (Account.find(@issue.account_id))
+        = link_to(account.name.shorten, account, :title => account.name)
+      - else
+        N/A
+    %tt Account:

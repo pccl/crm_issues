@@ -11,6 +11,18 @@ class IssuesController < ApplicationController
     @issues = get_issues(:page => params[:page])
   end
 
+  def show
+    @issue = Issue.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml { render :xml => @issue }
+    end
+
+  rescue
+    respond_to_not_found(:html, :xml)
+  end
+
   def new
     @issue = Issue.new(:user => @current_user)
     @account = Account.new(:user => @current_user)
