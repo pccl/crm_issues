@@ -1,6 +1,8 @@
 if @issue.valid?
   page[:create_issue_arrow].replace_html "&#9658;"
-  page[:create_issue_title].replace_html "Opportunities"
+  page[:create_issue_title].replace_html "Issues"
   page.visual_effect :toggle_blind, :create_issue, :duration => 0.3, :afterFinish => 'function(effect) {effect.element.update("")}'
+  page.insert_html :top, :issues, :partial => "issue", :collection => [ @issue ]
+  page[dom_id(@issue)].visual_effect :highlight, :duration => 1.5
 else
 end
