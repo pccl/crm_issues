@@ -1,3 +1,10 @@
+- content_for :styles do
+  li.issue .low      { background: gainsboro; color: white; }
+  li.issue .minor    { background: thistle; color: white; }
+  li.issue .major    { background: lightcoral; color: white; }
+  li.issue .critical { background: red; color: white; }
+
+
 .title_tools
   = link_to_inline(:create_issue, new_issue_path)
 

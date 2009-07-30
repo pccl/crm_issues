@@ -4,5 +4,6 @@ if @issue.valid?
   page.visual_effect :toggle_blind, :create_issue, :duration => 0.3, :afterFinish => 'function(effect) {effect.element.update("")}'
   page.insert_html :top, :issues, :partial => "issue", :collection => [ @issue ]
   page[dom_id(@issue)].visual_effect :highlight, :duration => 1.5
+  page.call "crm.flick", :empty, :remove
 else
 end
