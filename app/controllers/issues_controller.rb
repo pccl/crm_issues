@@ -67,6 +67,19 @@ class IssuesController < ApplicationController
     end
   end
 
+  def destroy
+    if @issue = Issue.find(params[:id])
+      @issue.destroy
+      respond_to do |format|
+        format.html { respond_to_destroy(:html) }
+        format.js   { respond_to_destroy(:ajax) }
+        format.xml  { head :ok }
+      end
+    end
+  rescue
+    respond_to_not_found(:html, :js, :xml)
+  end
+
   private
 
   def get_issues(options = { :page => nil, :query => nil })
@@ -79,5 +92,24 @@ class IssuesController < ApplicationController
     }
 
     Issue.paginate(pages)
+  end
+
+  def respond_to_destroy(method)
+    if method == :ajax
+      if called_from_index_page?
+        @issues = get_issues
+        if @issues.blank?
+          @issues = get_issues(:page => current_page - 1) if current_page > 1
+          render :action => :index and return
+        end
+      else # called from related asset.
+        self.current_page = 1
+      end
+      # At this point, render destroy.js.rjs
+    else
+      self.current_page = 1
+      flash[:notice] = "#{@issue.name} has been deleted."
+      redirect_to(issues_path)
+    end
   end
 end
