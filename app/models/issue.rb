@@ -2,6 +2,8 @@ class Issue < ActiveRecord::Base
   belongs_to :user
   belongs_to :account
   belongs_to :assignee, :class_name => "User", :foreign_key => :assigned_to
+  has_one    :account_issue, :dependent => :destroy
+  has_one    :account, :through => :account_issue
 
   # uses_user_permissions
   acts_as_paranoid
