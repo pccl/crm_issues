@@ -40,7 +40,6 @@ class IssuesController < ApplicationController
     # The following line throws a TypeError (can't dup NilClass) error.
     # The subsequent line looks stupid, but it works for now.
     @account = @issue.account || Account.new(:user => @current_user)
-    #@account = ( Account.find(@issue.account_id) ) || Account.new(:user => @current_user)
     @accounts = Account.my(@current_user).all(:order => "name")
     if params[:previous] =~ /(\d+)\z/
       @previous = Issue.find($1)
