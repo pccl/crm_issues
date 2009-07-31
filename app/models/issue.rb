@@ -3,6 +3,7 @@ class Issue < ActiveRecord::Base
   belongs_to :account
 
   # uses_user_permissions
+  acts_as_paranoid
 
   def update_with_account(params)
     self.update_attributes(params[:issue])
