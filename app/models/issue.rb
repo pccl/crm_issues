@@ -15,7 +15,8 @@ class Issue < ActiveRecord::Base
 
   def save_with_account(params)
     account = Account.create_or_select_for(self, params[:account], params[:users])
-    self.account = account
+    self.account_issue = AccountIssue.new(:account => account, :issue => self) unless account.id.blank?
+    #self.contacts << Contact.find(params[:contact]) unless params[:contact].blank?
     self.save
   end
 
