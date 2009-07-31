@@ -3,7 +3,7 @@ class CreateIssues < ActiveRecord::Migration
     create_table :issues do |t|
       t.string   :bug_ticket, :summary, :priority
       t.boolean  :bug_resolved, :issue_resolved
-      t.integer  :account_id, :user_id
+      t.integer  :account_id, :user_id, :assigned_to
       t.date :due_on
       t.datetime :deleted_at
 
