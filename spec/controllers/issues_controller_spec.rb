@@ -102,6 +102,14 @@ describe IssuesController do
         flash[:warning].should_not == nil
         response.should redirect_to(issues_path)
       end
+
+      it "should redirect to issues index if the issue is protected" do
+        @private = Factory(:issue, :user => Factory(:user), :access => "Private")
+
+        get :show, :id => @private.id
+        flash[:warning].should_not == nil
+        response.should redirect_to(issues_path)
+      end
     end
   end
 end

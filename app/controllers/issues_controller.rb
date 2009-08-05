@@ -25,7 +25,7 @@ class IssuesController < ApplicationController
       format.xml { render :xml => @issue }
     end
 
-  rescue
+  rescue ActiveRecord::RecordNotFound
     respond_to_not_found(:html, :xml)
   end
 
