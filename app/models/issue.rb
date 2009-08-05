@@ -5,19 +5,20 @@ class Issue < ActiveRecord::Base
   has_one    :account_issue, :dependent => :destroy
   has_one    :account, :through => :account_issue
 
-  # uses_user_permissions
+  uses_user_permissions
   acts_as_paranoid
 
-  def update_with_account(params)
-    self.update_attributes(params[:issue])
-    save_with_account(params)
+  def update_with_account_and_permissions(params)
+    account = Account.create_or_select_for(self, params[:account], params[:users])
+    self.account_issue = AccountIssue.new(:account => account, :issue => self) unless account.id.blank?
+    self.update_with_permissions(params[:users])
   end
 
-  def save_with_account(params)
+  def save_with_account_and_permissions(params)
     account = Account.create_or_select_for(self, params[:account], params[:users])
     self.account_issue = AccountIssue.new(:account => account, :issue => self) unless account.id.blank?
     #self.contacts << Contact.find(params[:contact]) unless params[:contact].blank?
-    self.save
+    self.save_with_permissions(params[:users])
   end
 
 end

@@ -17,7 +17,7 @@ class IssuesController < ApplicationController
   end
 
   def show
-    @issue = Issue.find(params[:id])
+    @issue = Issue.my(@current_user).find(params[:id])
     @comment = Comment.new
 
     respond_to do |format|
@@ -61,7 +61,7 @@ class IssuesController < ApplicationController
   def update
     @issue = Issue.find(params[:id])
     respond_to do |format|
-      if @issue.update_with_account(params)
+      if @issue.update_with_account_and_permissions(params)
         # update_sidebar if called_from_index_page?
         format.js
       else
@@ -75,7 +75,7 @@ class IssuesController < ApplicationController
 
     respond_to do |format|
       # TODO: save_with_account_and_permissions
-      if @issue.save_with_account(params)
+      if @issue.save_with_account_and_permissions(params)
         # update_sidebar if called_from_index_page?
         format.js
       else
