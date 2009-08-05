@@ -380,5 +380,26 @@ describe IssuesController do
       end
 
     end
+
+    describe "with invalid params" do
+
+      it "should not update the requested issue but still expose it as @issue, and render [update] template" do
+        @issue = Factory(:issue, :id => 42, :summary => "Its broken")
+
+        xhr :put, :update, :id => 42, :issue => { :summary => nil }, :account => {}
+        @issue.reload.summary.should == "Its broken"
+        assigns(:issue).should == @issue
+        response.should render_template("issues/update")
+      end
+
+      it "should expose existeing account as @account if selected" do
+        @account = Factory(:account, :id => 99)
+        @issue = Factory(:issue, :id => 42)
+        Factory(:account_issue, :account => @account, :issue => @issue)
+        
+        xhr :put, :update, :id => 42, :issue => { :summary => nil }, :account => { :id => 99 }
+        assigns(:account).should == @account
+      end
+    end
   end
 end
