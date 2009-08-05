@@ -145,5 +145,23 @@ describe IssuesController do
       xhr :get, :new, :related => "account_42"
       assigns[:account].should == @account
     end
+
+    describe "(when creating related issue)" do
+      it "should redirect to parent asset's index page with the message if parent asset got deleted" do
+        @account = Factory(:account).destroy
+
+        xhr :get, :new, :related => "account_#{@account.id}"
+        flash[:warning].should_not == nil
+        response.body.should == 'window.location.href = "/accounts";'
+      end
+
+      it "should redirect to parent asset's index page with the message if parent asset got protected" do
+        @account = Factory(:account, :access => "Private")
+        
+        xhr :get, :new, :related => "account_#{@account.id}"
+        flash[:warning].should_not == nil
+        response.body.should == 'window.location.href = "/accounts";'
+      end
+    end
   end
 end

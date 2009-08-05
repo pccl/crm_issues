@@ -44,6 +44,9 @@ class IssuesController < ApplicationController
       format.js
       format.xml { render :xml => @issue }
     end
+
+  rescue ActiveRecord::RecordNotFound
+    respond_to_related_not_found(model, :js) if model
   end
 
   def edit
