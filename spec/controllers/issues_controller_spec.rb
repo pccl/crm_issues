@@ -112,7 +112,7 @@ describe IssuesController do
       end
 
       it "should return 404 (not found) XML error" do
-        @issue = Factory(:opportunity, :user => @current_user).destroy
+        @issue = Factory(:issue, :user => @current_user).destroy
         request.env["HTTP_ACCEPT"] = "application/xml"
 
         get :show, :id => @issue.id
@@ -189,6 +189,23 @@ describe IssuesController do
 
       xhr :get, :edit, :id => 42, :previous => 41
       assigns[:previous].should == @previous
+    end
+
+    describe "issue got deleted or is otherwise unavailable" do
+      it "should reload current page with the flash message if the issue got deleted" do
+        @issue = Factory(:issue, :user => @current_user).destroy
+
+        xhr :get, :edit, :id => @issue.id
+        flash[:warning].should_not == nil
+        response.body.should == "window.location.reload();"
+      end
+
+      it "should reload current page with the flash message if the issue is protected" do
+        @private = Factory(:issue, :user => Factory(:user), :access => "Private")
+
+        xhr :get, :edit, :id => @private.id
+        response.body.should == "window.location.reload();"
+      end
     end
   end
 end
