@@ -35,6 +35,11 @@ class IssuesController < ApplicationController
     @account  = Account.new(:user => @current_user)
     @accounts = Account.my(@current_user).all(:order => "name")
 
+    if params[:related]
+      model, id = params[:related].split("_")
+      instance_variable_set("@#{model}", model.classify.constantize.my(@current_user).find(id))
+    end
+
     respond_to do |format|
       format.js
       format.xml { render :xml => @issue }
