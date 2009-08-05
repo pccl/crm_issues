@@ -1,3 +1,4 @@
+require 'fat_free_issues'
 # Tip taken from here:
 #   http://www.spacevatican.org/2008/5/28/reload-me-reload-me-not
 # Without this line, development mode has a strange bug where associations
@@ -15,3 +16,4 @@ if ActiveRecord::Base.connection.tables.include?('settings')
     end
   end
 end
+

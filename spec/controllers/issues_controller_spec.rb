@@ -272,8 +272,7 @@ describe IssuesController do
         xhr :post, :create, :issue => { :name => "Nothing works" }, :account => { :id => 42 }, :users => []
         assigns(:issue).should == @issue
         @issue.account.should == @account
-        # TODO: make Account have_many issues so that the next assertion passes
-        #@account.issues.should include(@issue)
+        @account.issues.should include(@issue)
       end
 
     end
