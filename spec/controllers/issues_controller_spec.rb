@@ -312,8 +312,8 @@ describe IssuesController do
 
   end
   
-  # PUT /opportunities/1
-  # PUT /opportunities/1.xml                                               AJAX
+  # PUT /issue/1
+  # PUT /issue/1.xml                                               AJAX
   #----------------------------------------------------------------------------
   describe "responding to PUT udpate" do
 
@@ -326,6 +326,39 @@ describe IssuesController do
         @issue.reload.summary.should == "Its broken!"
         assigns(:issue).should == @issue
         response.should render_template("issues/update")
+      end
+
+      it "should get sidebar data if called from issues index"
+
+      it "should be able to create an account and associate it with updated issue" do
+        @issue = Factory(:issue, :id => 42)
+
+        xhr :put, :update, :id => 42, :issue => { :summary => "Fixed it" }, :account => { :name => "new account" }
+        assigns[:issue].should == @issue
+        @issue.account.should_not be_nil
+        @issue.account.name.should == "new account"
+      end
+
+      it "should be able to assign a different account to the updated issue" do
+        @old_account = Factory(:account, :id => 111)
+        @new_account = Factory(:account, :id => 999)
+        @issue = Factory(:issue, :id => 42)
+        Factory(:account_issue, :account => @old_account, :issue => @issue)
+
+        xhr :put, :update, :id => 42, :issue => { :summary => "Hello" }, :account => { :id => 999 }
+        assigns[:issue].should == @issue
+        @issue.account.should == @new_account
+      end
+
+      it "should update issue permissions when sharing with specific users" do
+        @issue = Factory(:issue, :id => 42, :access => "Public")
+        he  = Factory(:user, :id => 7)
+        she = Factory(:user, :id => 8)
+
+        xhr :put, :update, :id => 42, :issue => { :summary => "See this", :access => "Shared" }, :users => %w(7 8), :account => {}
+        @issue.reload.access.should == "Shared"
+        @issue.permissions.map(&:user_id).sort.should == [ 7, 8 ]
+        assigns[:issue].should == @issue
       end
 
     end

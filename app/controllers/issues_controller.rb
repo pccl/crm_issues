@@ -69,7 +69,7 @@ class IssuesController < ApplicationController
   end
 
   def update
-    @issue = Issue.find(params[:id])
+    @issue = Issue.my(@current_user).find(params[:id])
     respond_to do |format|
       if @issue.update_with_account_and_permissions(params)
         # update_sidebar if called_from_index_page?
