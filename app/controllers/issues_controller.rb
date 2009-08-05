@@ -84,10 +84,13 @@ class IssuesController < ApplicationController
     @issue = Issue.new(params[:issue])
 
     respond_to do |format|
-      # TODO: save_with_account_and_permissions
       if @issue.save_with_account_and_permissions(params)
-        # update_sidebar if called_from_index_page?
+        if called_from_index_page?
+          @issues = get_issues
+          # update_sidebar 
+        end
         format.js
+        format.xml { render :xml => @issue, :status => :created, :location => @issue }
       else
         format.js
       end

@@ -233,4 +233,54 @@ describe IssuesController do
       end
     end
   end
+
+  # POST /issues
+  # POST /issues.xml                                                AJAX
+  #----------------------------------------------------------------------------
+  describe "responding to POST create" do
+    describe "with valid params" do
+
+      before(:each) do
+        @issue = Factory.build(:issue, :user => @current_user)
+        Issue.stub!(:new).and_return(@issue)
+      end
+
+      it "should expose a newly created issue as @issue and render [create] template" do
+        xhr :post, :create, :issue => { :summary => "Nothing works"}, :account => { :name => "My account" }, :users => %w(1 2 3)
+        assigns(:issue).should == @issue
+        response.should render_template("issues/create")
+      end
+
+      it "should get sidebar data if called from issues index" 
+
+      it "should reload issues to update pagination if called from issues index" do
+        request.env["HTTP_REFERER"] = "http://localhost/issues"
+
+        xhr :post, :create, :issue => { :summary => "Nothing works" }, :account => { :name => "My account" }, :users => %w(1 2 3)
+        assigns[:issues].should == [ @issue ]
+      end
+      
+      it "should create new account and associate it with the issue" do
+        xhr :post, :create, :issue => { :name => "Nothing works" }, :account => { :name => "new account" }
+        assigns(:issue).should == @issue
+        @issue.account.name.should == "new account"
+      end
+
+      it "should associate issue with the existing account" do
+        @account = Factory(:account, :id => 42)
+
+        xhr :post, :create, :issue => { :name => "Nothing works" }, :account => { :id => 42 }, :users => []
+        assigns(:issue).should == @issue
+        @issue.account.should == @account
+        # TODO: make Account have_many issues so that the next assertion passes
+        #@account.issues.should include(@issue)
+      end
+
+    end
+    
+    describe "with invalid params" do
+
+    end
+
+  end
 end
