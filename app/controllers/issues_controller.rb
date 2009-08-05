@@ -51,6 +51,7 @@ class IssuesController < ApplicationController
 
   def edit
     @issue = Issue.find(params[:id])
+    @users    = User.except(@current_user).all
     # FIXME!
     # The following line throws a TypeError (can't dup NilClass) error.
     # The subsequent line looks stupid, but it works for now.

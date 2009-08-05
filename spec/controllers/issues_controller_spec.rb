@@ -164,4 +164,31 @@ describe IssuesController do
       end
     end
   end
+
+  # GET /issues/1/edit                                              AJAX
+  #----------------------------------------------------------------------------
+  describe "responding to GET edit" do
+    it "should expose the requested issue as @issue and render [edit] template" do
+      @issue = Factory(:issue, :user => @current_user, :id => 42)
+      @account = Account.new(:user => @current_user)
+      @users = [ Factory(:user) ]
+      @accounts = [ Factory(:account, :user => @current_user) ]
+
+      xhr :get, :edit, :id => 42
+      assigns[:issue].should == @issue
+      assigns[:account].attributes.should == @account.attributes
+      assigns[:accounts].should == @accounts
+      assigns[:users].should == @users
+      assigns[:previous].should == nil
+      response.should render_template("issues/edit")
+    end
+
+    it "should expose previous issue as @previous when necessary" do
+      @issue = Factory(:issue, :id => 42)
+      @previous = Factory(:issue, :id => 41)
+
+      xhr :get, :edit, :id => 42, :previous => 41
+      assigns[:previous].should == @previous
+    end
+  end
 end
