@@ -278,7 +278,36 @@ describe IssuesController do
     end
     
     describe "with invalid params" do
+      it "should expose a newly created but unsaved issue as @issue with blank @account and render [create] template" do
+        @issue = Factory.build(:issue, :summary => nil, :user => @current_user)
+        Issue.stub!(:new).and_return(@issue)
+        @users = [ Factory(:user) ]
+        @account = Account.new(:user => @current_user)
+        @accounts = [ Factory(:account, :user => @current_user) ]
 
+        # Expect to redraw [create] form with blank account.
+        xhr :post, :create, :issue => {}, :account => { :user_id => @current_user.id }
+        assigns(:issue).should == @issue
+        assigns(:users).should == @users
+        assigns(:account).attributes.should == @account.attributes
+        assigns(:accounts).should == @accounts
+        response.should render_template("issues/create")
+      end
+
+      it "should expose a newly created but unsaved issue as @issue with existing @account and render [create] template" do
+        @account = Factory(:account, :id => 42, :user => @current_user)
+        @issue = Factory.build(:issue, :summary => nil, :user => @current_user)
+        Issue.stub!(:new).and_return(@issue)
+        @users = [ Factory(:user) ]
+
+        # Expect to redraw [create] form with selected account.
+        xhr :post, :create, :issue => {}, :account => { :id => 42, :user_id => @current_user.id }
+        assigns(:issue).should == @issue
+        assigns(:users).should == @users
+        assigns(:account).should == @account
+        assigns(:accounts).should == [ @account ]
+        response.should render_template("issues/create")
+      end
     end
 
   end

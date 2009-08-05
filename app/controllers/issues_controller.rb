@@ -92,7 +92,19 @@ class IssuesController < ApplicationController
         format.js
         format.xml { render :xml => @issue, :status => :created, :location => @issue }
       else
+        @users = User.except(@current_user).all
+        @accounts = Account.my(@current_user).all(:order => "name")
+        unless params[:account][:id].blank?
+          @account = Account.find(params[:account][:id])
+        else
+          if request.referer =~ /\/accounts\/(.+)$/
+            @account = Account.find($1) # related account
+          else
+            @account = Account.new(:user => @current_user)
+          end
+        end
         format.js
+        format.xml  { render :xml => @issue.errors, :status => :unprocessable_entity }
       end
     end
   end
