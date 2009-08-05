@@ -110,6 +110,14 @@ describe IssuesController do
         flash[:warning].should_not == nil
         response.should redirect_to(issues_path)
       end
+
+      it "should return 404 (not found) XML error" do
+        @issue = Factory(:opportunity, :user => @current_user).destroy
+        request.env["HTTP_ACCEPT"] = "application/xml"
+
+        get :show, :id => @issue.id
+        response.code.should == "404" # :not_found
+      end
     end
   end
 end
