@@ -58,7 +58,7 @@ class IssuesController < ApplicationController
     @account = @issue.account || Account.new(:user => @current_user)
     @accounts = Account.my(@current_user).all(:order => "name")
     if params[:previous] =~ /(\d+)\z/
-      @previous = Issue.find($1)
+      @previous = Issue.my(@current_user).find($1)
     end
     respond_to do |format|
       format.js

@@ -207,5 +207,30 @@ describe IssuesController do
         response.body.should == "window.location.reload();"
       end
     end
+
+    describe "(previous issue got deleted or is otherwise unavailable)" do
+      before(:each) do
+        @issue = Factory(:issue, :user => @current_user)
+        @previous = Factory(:issue, :user => Factory(:user))
+      end
+
+      it "should notivy the veiw if previuos issue got deleted" do
+        @previous.destroy
+
+        xhr :get, :edit, :id => @issue.id, :previous => @previous.id
+        flash[:warning].should == nil  # no warning, just silently remove the div
+        assigns[:previous].should == @previous.id
+        response.should render_template("issues/edit")
+      end
+
+      it "should notify the view if previous issue got protected" do
+        @previous.update_attribute(:access, "Private")
+
+        xhr :get, :edit, :id => @issue.id, :previous => @previous.id
+        flash[:warning].should == nil  # no warning, just silently remove the div
+        assigns[:previous].should == @previous.id
+        response.should render_template("issues/edit")
+      end
+    end
   end
 end
