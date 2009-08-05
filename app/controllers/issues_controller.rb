@@ -9,6 +9,11 @@ class IssuesController < ApplicationController
 
   def index
     @issues = get_issues(:page => params[:page])
+
+    respond_to do |format|
+      format.html # index.html.haml
+      format.xml  { render :xml => @issues }
+    end
   end
 
   def show
