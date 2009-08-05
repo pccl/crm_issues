@@ -75,9 +75,22 @@ class IssuesController < ApplicationController
         # update_sidebar if called_from_index_page?
         format.js
       else
+        @users = User.except(@current_user).all
+        @accounts = Account.my(@current_user).all(:order => "name")
+        unless params[:account][:id].blank?
+          @account = Account.find(params[:account][:id])
+        else
+          if request.referer =~ /\/accounts\/(.+)$/
+            @account = Account.find($1) # related account
+          else
+            @account = Account.new(:user => @current_user)
+          end
+        end
         format.js
       end
     end
+  rescue ActiveRecord::RecordNotFound
+    respond_to_not_found(:js, :xml)
   end
 
   def create
