@@ -30,8 +30,9 @@ class IssuesController < ApplicationController
   end
 
   def new
-    @issue = Issue.new(:user => @current_user)
-    @account = Account.new(:user => @current_user)
+    @issue    = Issue.new(:user => @current_user)
+    @users    = User.except(@current_user).all
+    @account  = Account.new(:user => @current_user)
     @accounts = Account.my(@current_user).all(:order => "name")
 
     respond_to do |format|

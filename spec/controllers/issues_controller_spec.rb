@@ -120,4 +120,30 @@ describe IssuesController do
       end
     end
   end
+
+  # GET /issues/new
+  # GET /issues/new.xml                                             AJAX
+  #----------------------------------------------------------------------------
+  describe "responding to GET new" do
+    it "should expose a new issue as @issue and render [new] template" do
+      @issue = Issue.new(:user => @current_user, :access => "Private")
+      @account = Account.new(:user => @current_user, :access => "Private")
+      @users = [ Factory(:user) ]
+      @accounts = [ Factory(:account, :user => @current_user) ]
+
+      xhr :get, :new
+      assigns[:issue].attributes.should == @issue.attributes
+      assigns[:account].attributes.should == @account.attributes
+      assigns[:users].should == @users
+      assigns[:accounts].should == @accounts
+      response.should render_template("issues/new")
+    end
+
+    it "should create an instance of related object when necessary" do
+      @account = Factory(:account, :id => 42)
+
+      xhr :get, :new, :related => "account_42"
+      assigns[:account].should == @account
+    end
+  end
 end
