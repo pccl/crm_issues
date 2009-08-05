@@ -311,4 +311,23 @@ describe IssuesController do
     end
 
   end
+  
+  # PUT /opportunities/1
+  # PUT /opportunities/1.xml                                               AJAX
+  #----------------------------------------------------------------------------
+  describe "responding to PUT udpate" do
+
+    describe "with valid params" do
+
+      it "should update the requested issue, expose it as @issue, and render [update] template" do
+        @issue = Factory(:issue, :id => 42)
+
+        xhr :put, :update, :id => 42, :issue => { :summary => "Its broken!" }, :account => { :name => "My account" }, :users => %w(1 2 3)
+        @issue.reload.summary.should == "Its broken!"
+        assigns(:issue).should == @issue
+        response.should render_template("issues/update")
+      end
+
+    end
+  end
 end

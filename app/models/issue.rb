@@ -13,7 +13,7 @@ class Issue < ActiveRecord::Base
   def update_with_account_and_permissions(params)
     account = Account.create_or_select_for(self, params[:account], params[:users])
     self.account_issue = AccountIssue.new(:account => account, :issue => self) unless account.id.blank?
-    self.update_with_permissions(params[:users])
+    self.update_with_permissions(params[:issue], params[:users])
   end
 
   def save_with_account_and_permissions(params)
