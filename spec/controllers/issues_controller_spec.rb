@@ -78,9 +78,29 @@ describe IssuesController do
         response.should render_template("issues/show")
       end
 
-      it "should update an activity when viewing the issue" do
-        Activity.should_receive(:log).with(@current_user, @issue, :viewed).once
+      it "should update an activity when viewing the issue" # do
+        #Activity.should_receive(:log).with(@current_user, @issue, :viewed).once
+        #get :show, :id => @issue.id
+      #end
+    end
+
+    describe "with the mime type of XML" do
+      it "should render the requested issue as XML" do
+        @issue = Factory(:issue, :id => 42)
+
+        request.env["HTTP_ACCEPT"] = "application/xml"
+        get :show, :id => 42
+        response.body.should == @issue.to_xml
+      end
+    end
+
+    describe "issue got deleted or otherwise unavailable" do
+      it "should redirect to issues index if the issue got deleted" do
+        @issue = Factory(:issue, :user => @current_user).destroy
+
         get :show, :id => @issue.id
+        flash[:warning].should_not == nil
+        response.should redirect_to(issues_path)
       end
     end
   end
