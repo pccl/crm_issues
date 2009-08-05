@@ -7,9 +7,13 @@ describe IssuesController do
     set_current_tab(:issues)
   end
 
+  # GET /issues
+  # GET /issues.xml
+  #----------------------------------------------------------------------------
   describe "responding to GET index" do
 
     before(:each) do
+      #get_data_for_sidebar
     end
 
     it "should expose all issues as @issues and render [index] template" do
@@ -21,6 +25,8 @@ describe IssuesController do
     end
 
     it "should expose the data for the issues sidebar"
+
+    it "should filter out issues by priority"
 
     describe "AJAX pagination" do
       it "should pick up page number from params" do
@@ -51,6 +57,30 @@ describe IssuesController do
 
         get :index
         response.body.should == @issues.to_xml
+      end
+    end
+  end
+
+  # GET /issues/1
+  # GET /issues/1.xml                                               HTML
+  #----------------------------------------------------------------------------
+  describe "responding to GET show" do
+    describe "with mime type of HTML" do
+      before(:each) do
+        @issue = Factory(:issue, :id => 42)
+        @comment = Comment.new
+      end
+
+      it "should expose the requested issue as @issue and render the [show] template" do
+        get :show, :id => 42
+        assigns[:issue].should == @issue
+        assigns[:comment].attributes.should == @comment.attributes
+        response.should render_template("issues/show")
+      end
+
+      it "should update an activity when viewing the issue" do
+        Activity.should_receive(:log).with(@current_user, @issue, :viewed).once
+        get :show, :id => @issue.id
       end
     end
   end
