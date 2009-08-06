@@ -12,6 +12,10 @@ class Issue < ActiveRecord::Base
     [[ "Unresolved", 0 ], [ "Bug resolved", 1 ], [ "Issue resolved", 2 ]]
   end
 
+  def status_in_words
+    Issue.allowed_statuses.map{ |s| s.first }[self.status]
+  end
+
   validates_presence_of :summary, :message => "^Please provide an issue summary."
 
   def update_with_account_and_permissions(params)

@@ -16,3 +16,9 @@
       - else
         N/A
     %tt Account:
+  %li
+    %dt= truncate((@issue.assigned_to ? @issue.assignee.full_name : @issue.user.full_name), 30)
+    %tt Assigned to:
+  %li
+    %dt= @issue.status_in_words
+    %tt Status:
