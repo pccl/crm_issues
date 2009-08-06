@@ -1,2 +1,5 @@
 # FatFreeIssues
-require 'fat_free_issues/account'
+
+Account.class_eval do
+  include AccountIssueAssociations
+end
