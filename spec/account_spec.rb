@@ -12,6 +12,6 @@ describe Account do
     @account.respond_to?(:activities).should be_true
   end
   it "should add new associations set up in Fat Free Issues plugin" do
-    @account.respond_to?(:issue).should be_true
+    @account.respond_to?(:issues).should be_true
   end
 end
