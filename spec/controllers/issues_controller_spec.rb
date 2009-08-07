@@ -441,6 +441,24 @@ describe IssuesController do
           response.should render_template("issues/index")
         end
       end
+
+      describe "issue got deleted or otherwise unavailable" do
+        it "should reload current page if the issue was deleted" do
+          @issue = Factory(:issue, :user => @current_user).destroy
+
+          xhr :delete, :destroy, :id => @issue.id
+          flash[:warning].should_not == nil
+          response.body.should == "window.location.reload();"
+        end
+
+        it "should reload the current page with the flash mdessage if the opportunity is protected" do
+          @private = Factory(:issue, :user => Factory(:user), :access => "Private")
+
+          xhr :delete, :destroy, :id => @private.id
+          flash[:warning].should_not == nil
+          response.body.should == "window.location.reload();"
+        end
+      end
     end
   end
 end
