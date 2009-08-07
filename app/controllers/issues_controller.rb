@@ -123,15 +123,14 @@ class IssuesController < ApplicationController
   end
 
   def destroy
-    if @issue = Issue.find(params[:id])
-      @issue.destroy
-      respond_to do |format|
-        format.html { respond_to_destroy(:html) }
-        format.js   { respond_to_destroy(:ajax) }
-        format.xml  { head :ok }
-      end
+    @issue = Issue.my(@current_user).find(params[:id])
+    @issue.destroy if @issue
+    respond_to do |format|
+      format.html { respond_to_destroy(:html) }
+      format.js   { respond_to_destroy(:ajax) }
+      format.xml  { head :ok }
     end
-  rescue
+  rescue ActiveRecord::RecordNotFound
     respond_to_not_found(:html, :js, :xml)
   end
 

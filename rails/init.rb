@@ -10,8 +10,7 @@ ActiveSupport::Dependencies.load_once_paths.delete(File.expand_path(File.dirname
 #
 if ActiveRecord::Base.connection.tables.include?('settings')
   if tabs = Setting.tabs
-    #require 'ruby-debug'; debugger
-    unless tabs.map{|t| t[:url][:controller] }.any? { |url| url.match(/issues$/) }
+    unless tabs.map{|t| t[:url][:controller] }.any? { |url| url.match(/issues$/) unless url.blank? }
       tabs << {:url => '/issues', :text => 'Issues', :active => false}
       Setting.tabs = tabs
     end
