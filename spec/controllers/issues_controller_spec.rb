@@ -492,7 +492,7 @@ describe IssuesController do
   describe "responding to GET search" do
     before(:each) do
       @first = Factory(:issue, :user => @current_user, :name => "The first one")
-      @second = Factory(:issue, :user => @current_user, :name => "The secont one")
+      @second = Factory(:issue, :user => @current_user, :name => "The second one")
       @issues = [ @first, @second ]
     end
 

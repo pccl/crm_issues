@@ -133,6 +133,15 @@ class IssuesController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     respond_to_not_found(:html, :js, :xml)
   end
+  
+  def search
+    @issues = get_issues(:query => params[:query], :page => 1)
+
+    respond_to do |format|
+      format.js   { render :action => :index }
+      format.xml  { render :xml => @issues.to_xml }
+    end
+  end
 
   private
 
@@ -140,12 +149,15 @@ class IssuesController < ApplicationController
     self.current_page = options[:page] if options[:page]
     self.current_query = options[:query] if options[:query]
 
+    records = {
+      :user => @current_user
+    }
     pages = {
       :page => current_page,
       :per_page => @current_user.pref[:accounts_per_page]  # TODO: create a :issues_per_page preference
     }
 
-    Issue.paginate(pages)
+    ( current_query.blank? ? Issue.my(records) : Issue.my(records).search(current_query) ).paginate(pages)
   end
 
   def respond_to_destroy(method)

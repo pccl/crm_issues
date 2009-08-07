@@ -5,6 +5,8 @@ class Issue < ActiveRecord::Base
   has_one    :account_issue, :dependent => :destroy
   has_one    :account, :through => :account_issue
 
+  simple_column_search :name, :match => :middle, :escape => lambda { |query| query.gsub(/[^\w\s\-]/, "").strip }
+
   uses_user_permissions
   acts_as_commentable
   acts_as_paranoid
