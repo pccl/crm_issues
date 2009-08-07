@@ -460,5 +460,30 @@ describe IssuesController do
         end
       end
     end
+
+    describe "HTML request" do
+      it "should redirect to Issues index when an issue gets deleted from its landing page" do
+        delete :destroy, :id => @issue.id
+
+        flash[:notice].should_not == nil
+        response.should redirect_to(issues_path)
+      end
+
+      it "should redirect to issue index with the flash message if the issue was deleted" do
+        @issue = Factory(:issue, :user => @current_user).destroy
+
+        delete :destroy, :id => @issue.id
+        flash[:warning].should_not == nil
+        response.should redirect_to(issues_path)
+      end
+
+      it "should redirect to issue index with the flash message if the issue was deleted" do
+        @private = Factory(:issue, :user => Factory(:user), :access => "Private")
+
+        delete :destroy, :id => @private.id
+        flash[:warning].should_not == nil
+        response.should redirect_to(issues_path)
+      end
+    end
   end
 end
