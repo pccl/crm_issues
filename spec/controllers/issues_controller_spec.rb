@@ -486,4 +486,32 @@ describe IssuesController do
       end
     end
   end
+
+  # GET /opportunities/search/query                                                AJAX
+  #----------------------------------------------------------------------------
+  describe "responding to GET search" do
+    before(:each) do
+      @first = Factory(:issue, :user => @current_user, :name => "The first one")
+      @second = Factory(:issue, :user => @current_user, :name => "The secont one")
+      @issues = [ @first, @second ]
+    end
+
+    it "should perform lookup using query string and redirect to index" do
+      xhr :get, :search, :query => "second"
+
+      assigns[:issues].should == [ @second ]
+      assigns[:current_query].should == "second"
+      session[:issues_current_query].should == "second"
+      response.should render_template("index")
+    end
+
+    describe "with mime type of XML" do
+      it "should perform lookup using query string and render XML" do
+        request.env["HTTP_ACCEPT"] = "application/xml"
+        get :search, :query => "second?!"
+
+        response.body.should == [ @second ].to_xml
+      end
+    end
+  end
 end
