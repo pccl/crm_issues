@@ -9,5 +9,5 @@ if @issue.errors.empty?
 else
   page[id].replace_html :partial => "edit"
   page.call "crm.create_or_select_account", request.referer =~ /\/accounts\// || @account.id.blank?
-  page.call "crm.date_select_popup", "opportunity_closes_on"
+  page.call "crm.date_select_popup", "issue_due_on"
 end
