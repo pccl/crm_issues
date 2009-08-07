@@ -402,4 +402,45 @@ describe IssuesController do
       end
     end
   end
+
+  # DELETE /issues/1
+  # DELETE /issues/1.xml                                            AJAX
+  #----------------------------------------------------------------------------
+  describe "responding to DELETE destroy" do
+    before(:each) do
+      @issue = Factory(:issue, :user => @current_user)
+    end
+
+    describe "AJAX request" do
+      it "should destroy the requested issue and render [destroy] template" do
+        xhr :delete, :destroy, :id => @issue.id
+
+        lambda { @issue.reload }.should raise_error(ActiveRecord::RecordNotFound)
+        response.should render_template("issues/destroy")
+      end
+
+      describe "when called from Issues index page" do
+        before(:each) do
+          request.env["HTTP_REFERER"] = "http://localhost/issues"
+        end
+
+        it "should get sidebar data"
+        it "should try previous page and render index action if current page has no issues" do
+          session[:issues_current_page] = 42
+
+          xhr :delete, :destroy, :id => @issue.id
+          session[:issues_current_page].should == 41
+          response.should render_template("issues/index")
+        end
+
+        it "should render index action when deleting last issue" do
+          session[:issues_current_page] = 1
+
+          xhr :delete, :destroy, :id => @issue.id
+          session[:issues_current_page].should == 1
+          response.should render_template("issues/index")
+        end
+      end
+    end
+  end
 end
