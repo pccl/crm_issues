@@ -1,7 +1,7 @@
 class CreateIssues < ActiveRecord::Migration
   def self.up
     create_table :issues do |t|
-      t.string   :bug_ticket, :summary, :priority
+      t.string   :bug_ticket, :name, :priority
       t.string   :access, :limit => 8, :default => "Private" # %w(Private Public Shared)
       t.integer  :user_id, :assigned_to
       t.integer  :status, :default => 0

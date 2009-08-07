@@ -162,7 +162,7 @@ class IssuesController < ApplicationController
       # At this point, render destroy.js.rjs
     else
       self.current_page = 1
-      flash[:notice] = "#{@issue.summary} has been deleted."
+      flash[:notice] = "#{@issue.name} has been deleted."
       redirect_to(issues_path)
     end
   end

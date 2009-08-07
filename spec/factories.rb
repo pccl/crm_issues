@@ -7,7 +7,7 @@ Factory.define :account_issue do |a|
 end
 
 Factory.define :issue do |i|
-  i.summary         { Faker::Lorem::paragraph(1) } # Careful that generated text doesn't exceed 255 chars!
+  i.name            { Faker::Lorem::paragraph(1) } # Careful that generated text doesn't exceed 255 chars!
   i.priority        { %w( low minor major critical).rand }
   i.access          "Public"
   i.bug_ticket      { (1000 + rand*1000).to_i }

@@ -246,7 +246,7 @@ describe IssuesController do
       end
 
       it "should expose a newly created issue as @issue and render [create] template" do
-        xhr :post, :create, :issue => { :summary => "Nothing works"}, :account => { :name => "My account" }, :users => %w(1 2 3)
+        xhr :post, :create, :issue => { :name => "Nothing works"}, :account => { :name => "My account" }, :users => %w(1 2 3)
         assigns(:issue).should == @issue
         response.should render_template("issues/create")
       end
@@ -256,7 +256,7 @@ describe IssuesController do
       it "should reload issues to update pagination if called from issues index" do
         request.env["HTTP_REFERER"] = "http://localhost/issues"
 
-        xhr :post, :create, :issue => { :summary => "Nothing works" }, :account => { :name => "My account" }, :users => %w(1 2 3)
+        xhr :post, :create, :issue => { :name => "Nothing works" }, :account => { :name => "My account" }, :users => %w(1 2 3)
         assigns[:issues].should == [ @issue ]
       end
       
@@ -279,7 +279,7 @@ describe IssuesController do
     
     describe "with invalid params" do
       it "should expose a newly created but unsaved issue as @issue with blank @account and render [create] template" do
-        @issue = Factory.build(:issue, :summary => nil, :user => @current_user)
+        @issue = Factory.build(:issue, :name => nil, :user => @current_user)
         Issue.stub!(:new).and_return(@issue)
         @users = [ Factory(:user) ]
         @account = Account.new(:user => @current_user)
@@ -296,7 +296,7 @@ describe IssuesController do
 
       it "should expose a newly created but unsaved issue as @issue with existing @account and render [create] template" do
         @account = Factory(:account, :id => 42, :user => @current_user)
-        @issue = Factory.build(:issue, :summary => nil, :user => @current_user)
+        @issue = Factory.build(:issue, :name => nil, :user => @current_user)
         Issue.stub!(:new).and_return(@issue)
         @users = [ Factory(:user) ]
 
@@ -322,8 +322,8 @@ describe IssuesController do
       it "should update the requested issue, expose it as @issue, and render [update] template" do
         @issue = Factory(:issue, :id => 42)
 
-        xhr :put, :update, :id => 42, :issue => { :summary => "Its broken!" }, :account => { :name => "My account" }, :users => %w(1 2 3)
-        @issue.reload.summary.should == "Its broken!"
+        xhr :put, :update, :id => 42, :issue => { :name => "Its broken!" }, :account => { :name => "My account" }, :users => %w(1 2 3)
+        @issue.reload.name.should == "Its broken!"
         assigns(:issue).should == @issue
         response.should render_template("issues/update")
       end
@@ -333,7 +333,7 @@ describe IssuesController do
       it "should be able to create an account and associate it with updated issue" do
         @issue = Factory(:issue, :id => 42)
 
-        xhr :put, :update, :id => 42, :issue => { :summary => "Fixed it" }, :account => { :name => "new account" }
+        xhr :put, :update, :id => 42, :issue => { :name => "Fixed it" }, :account => { :name => "new account" }
         assigns[:issue].should == @issue
         @issue.account.should_not be_nil
         @issue.account.name.should == "new account"
@@ -345,7 +345,7 @@ describe IssuesController do
         @issue = Factory(:issue, :id => 42)
         Factory(:account_issue, :account => @old_account, :issue => @issue)
 
-        xhr :put, :update, :id => 42, :issue => { :summary => "Hello" }, :account => { :id => 999 }
+        xhr :put, :update, :id => 42, :issue => { :name => "Hello" }, :account => { :id => 999 }
         assigns[:issue].should == @issue
         @issue.account.should == @new_account
       end
@@ -355,7 +355,7 @@ describe IssuesController do
         he  = Factory(:user, :id => 7)
         she = Factory(:user, :id => 8)
 
-        xhr :put, :update, :id => 42, :issue => { :summary => "See this", :access => "Shared" }, :users => %w(7 8), :account => {}
+        xhr :put, :update, :id => 42, :issue => { :name => "See this", :access => "Shared" }, :users => %w(7 8), :account => {}
         @issue.reload.access.should == "Shared"
         @issue.permissions.map(&:user_id).sort.should == [ 7, 8 ]
         assigns[:issue].should == @issue
@@ -384,10 +384,10 @@ describe IssuesController do
     describe "with invalid params" do
 
       it "should not update the requested issue but still expose it as @issue, and render [update] template" do
-        @issue = Factory(:issue, :id => 42, :summary => "Its broken")
+        @issue = Factory(:issue, :id => 42, :name => "Its broken")
 
-        xhr :put, :update, :id => 42, :issue => { :summary => nil }, :account => {}
-        @issue.reload.summary.should == "Its broken"
+        xhr :put, :update, :id => 42, :issue => { :name => nil }, :account => {}
+        @issue.reload.name.should == "Its broken"
         assigns(:issue).should == @issue
         response.should render_template("issues/update")
       end
@@ -397,7 +397,7 @@ describe IssuesController do
         @issue = Factory(:issue, :id => 42)
         Factory(:account_issue, :account => @account, :issue => @issue)
         
-        xhr :put, :update, :id => 42, :issue => { :summary => nil }, :account => { :id => 99 }
+        xhr :put, :update, :id => 42, :issue => { :name => nil }, :account => { :id => 99 }
         assigns(:account).should == @account
       end
     end

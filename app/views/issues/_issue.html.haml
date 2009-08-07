@@ -5,7 +5,7 @@
       %small
         = link_to_edit(issue) + " | "
         = link_to_delete(issue) + "&nbsp;"
-    = link_to(issue.summary, issue)
+    = link_to(issue.name, issue)
     %tt
       &ndash;
       == added #{time_ago_in_words(issue.created_at)} ago by

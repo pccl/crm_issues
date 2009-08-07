@@ -4,7 +4,7 @@ if params[:cancel] == "true" # <------------------------- Hide edit issue form
 
   if called_from_landing_page?
     page.call "crm.flip_form", :edit_issue
-    page.call "crm.set_title", :edit_issue, @issue.summary
+    page.call "crm.set_title", :edit_issue, @issue.name
   else # <----------------------------------------------- Go back to issues listing
     page[id].replace :partial => "issue", :collection => [ @issue ]
   end
@@ -26,7 +26,7 @@ else # <------------------------------------------------- Show edit issue form
   elsif params[:cancel] == "false" # <------------------- Called from title of issue landing page
     page[:edit_issue].replace_html :partial => "edit"
     page.call "crm.flip_form", :edit_issue
-    page.call "crm.set_title", :edit_issue, "Edit #{@issue.summary}"
+    page.call "crm.set_title", :edit_issue, "Edit #{@issue.name}"
   end
 
   page.call "crm.create_or_select_account", request.referer =~ /\/accounts\// || @account.id.blank?

@@ -17,7 +17,7 @@ class Issue < ActiveRecord::Base
     Issue.allowed_statuses.map{ |s| s.first }[self.status]
   end
 
-  validates_presence_of :summary, :message => "^Please provide an issue summary."
+  validates_presence_of :name, :message => "^Please provide an issue name."
 
   def update_with_account_and_permissions(params)
     account = Account.create_or_select_for(self, params[:account], params[:users])
