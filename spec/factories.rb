@@ -11,8 +11,7 @@ Factory.define :issue do |i|
   i.priority        { %w( low minor major critical).rand }
   i.access          "Public"
   i.bug_ticket      { (1000 + rand*1000).to_i }
-  i.bug_resolved    false
-  i.issue_resolved  false
+  i.status          { [1,2,3].rand }
   i.user            { |a| a.association(:user) }
   i.assigned_to     nil
   i.due_on          { Factory.next(:date) }
