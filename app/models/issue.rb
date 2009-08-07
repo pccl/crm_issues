@@ -6,6 +6,7 @@ class Issue < ActiveRecord::Base
   has_one    :account, :through => :account_issue
 
   uses_user_permissions
+  acts_as_commentable
   acts_as_paranoid
 
   def self.allowed_statuses

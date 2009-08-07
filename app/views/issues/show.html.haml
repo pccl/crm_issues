@@ -3,3 +3,8 @@
   = link_to_inline(:edit_issue, edit_issue_path(@issue), :text => "Edit") + " | "
   = link_to_function("Delete?", confirm_delete(@issue))
 .title#edit_issue_title= @issue.summary
+
+%div#edit_opportunity{ hidden }
+
+= render :partial => "common/new_comment", :locals => { :commentable => @issue }
+= render :partial => "common/comment", :collection => @issue.comments
