@@ -1,0 +1,7 @@
+unless @issues.blank?
+  page[:issues].replace_html render(:partial => "issue", :collection => @issues)
+else
+  page[:issues].replace_html render(:partial => "common/empty")
+end
+page[:paginate].replace_html render(:partial => "common/paginate")
+

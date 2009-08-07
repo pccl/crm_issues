@@ -10,6 +10,7 @@
 
 .title
   %span#create_issue_title Issues
+  = image_tag("loading.gif", :size => "16x16", :id => "loading", :style => "display: none;")
 .remote#create_issue{ hidden }
 
 .list#issues
