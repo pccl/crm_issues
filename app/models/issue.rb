@@ -7,7 +7,10 @@ class Issue < ActiveRecord::Base
 
   simple_column_search :name, :match => :middle, :escape => lambda { |query| query.gsub(/[^\w\s\-]/, "").strip }
 
-  named_scope :with_ticket, lambda { |ticket| { :conditions => ["bug_ticket LIKE ?", ticket] } }
+  named_scope :with_ticket,   lambda { |ticket| { :conditions => ["bug_ticket LIKE ?", ticket] } }
+  named_scope :with_priority, lambda { |priority| { :conditions => ["priority LIKE ?", priority] } }
+  named_scope :only_priorities, lambda { |filters| { :conditions => [ "priority IN (?)", filters ] } }
+
   named_scope :unresolved, :conditions => [ "status = ?", 0 ]
   named_scope :pending,    :conditions => [ "status IS IN ?", [0,1] ]
   named_scope :resolved,   :conditions => [ "status = ?", 2 ]
