@@ -136,7 +136,7 @@ class IssuesController < ApplicationController
   end
   
   def search
-    @issues = get_issues(:query => params[:query], :page => 1)
+    @issues = get_issues(:bug_ticket => params[:bug_ticket], :query => params[:query], :page => 1)
 
     respond_to do |format|
       format.js   { render :action => :index }
@@ -146,9 +146,10 @@ class IssuesController < ApplicationController
 
   private
 
-  def get_issues(options = { :page => nil, :query => nil })
+  def get_issues(options = { :page => nil, :query => nil, :bug_ticket => nil })
     self.current_page = options[:page] if options[:page]
     self.current_query = options[:query] if options[:query]
+    self.bug_ticket = options[:bug_ticket] if options[:bug_ticket]
 
     records = {
       :user => @current_user
@@ -158,7 +159,15 @@ class IssuesController < ApplicationController
       :per_page => @current_user.pref[:accounts_per_page]  # TODO: create a :issues_per_page preference
     }
 
-    ( current_query.blank? ? Issue.my(records) : Issue.my(records).search(current_query) ).paginate(pages)
+    full_query = current_query.blank? ? 
+      Issue.my(records) : 
+      Issue.my(records).search(current_query) 
+
+    if bug_ticket.blank?
+      full_query.paginate(pages)
+    else
+      full_query.with_ticket(bug_ticket).paginate(pages)
+    end
   end
 
   def respond_to_destroy(method)
@@ -178,5 +187,14 @@ class IssuesController < ApplicationController
       flash[:notice] = "#{@issue.name} has been deleted."
       redirect_to(issues_path)
     end
+  end
+
+
+  def bug_ticket=(bug_ticket)
+    @bug_ticket = session[:bug_ticket] = bug_ticket
+  end
+
+  def bug_ticket
+    @bug_ticket = params[:bug_ticket] || session[:bug_ticket] || ""
   end
 end

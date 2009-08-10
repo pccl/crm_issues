@@ -7,6 +7,8 @@ class Issue < ActiveRecord::Base
 
   simple_column_search :name, :match => :middle, :escape => lambda { |query| query.gsub(/[^\w\s\-]/, "").strip }
 
+  named_scope :with_ticket, lambda { |ticket| { :conditions => ["bug_ticket LIKE ?", ticket] } }
+
   uses_user_permissions
   acts_as_commentable
   acts_as_paranoid

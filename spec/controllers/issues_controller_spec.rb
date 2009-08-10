@@ -521,8 +521,8 @@ describe IssuesController do
         xhr :get, :search, :bug_ticket => "222"
 
         assigns[:issues].should == [ @second ]
-        assigns[:current_query].should == "second"
-        session[:issues_current_query].should == "second"
+        assigns[:bug_ticket].should == "222"
+        session[:bug_ticket].should == "222"
         response.should render_template("index")
       end
 
