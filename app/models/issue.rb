@@ -8,6 +8,9 @@ class Issue < ActiveRecord::Base
   simple_column_search :name, :match => :middle, :escape => lambda { |query| query.gsub(/[^\w\s\-]/, "").strip }
 
   named_scope :with_ticket, lambda { |ticket| { :conditions => ["bug_ticket LIKE ?", ticket] } }
+  named_scope :unresolved, :conditions => [ "status = ?", 0 ]
+  named_scope :pending,    :conditions => [ "status IS IN ?", [0,1] ]
+  named_scope :resolved,   :conditions => [ "status = ?", 2 ]
 
   uses_user_permissions
   acts_as_commentable
@@ -15,6 +18,10 @@ class Issue < ActiveRecord::Base
 
   def self.allowed_statuses
     [[ "Unresolved", 0 ], [ "Bug resolved", 1 ], [ "Issue resolved", 2 ]]
+  end
+
+  def self.open_tickets
+    Issue.unresolved.all.map { |i| i.bug_ticket.to_i }.uniq.sort
   end
 
   def status_in_words
