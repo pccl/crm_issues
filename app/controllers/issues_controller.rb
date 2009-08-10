@@ -160,15 +160,10 @@ class IssuesController < ApplicationController
       :per_page => @current_user.pref[:accounts_per_page]  # TODO: create a :issues_per_page preference
     }
 
-    full_query = current_query.blank? ? 
-      Issue.my(records) : 
-      Issue.my(records).search(current_query) 
-
-    if bug_ticket.blank?
-      full_query.paginate(pages)
-    else
-      full_query.with_ticket(bug_ticket).paginate(pages)
-    end
+    full_query = Issue.my(records)
+    full_query = full_query.search(current_query)      unless current_query.blank?
+    full_query = full_query.with_ticket(bug_ticket)    unless bug_ticket.blank?
+    full_query.paginate(pages)
   end
 
   def respond_to_destroy(method)
