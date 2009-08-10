@@ -7,7 +7,7 @@ namespace :crm do
         require 'faker'
         require File.expand_path(File.dirname(__FILE__) + "/../../../../../spec/factories.rb")
         require File.expand_path(File.dirname(__FILE__) + "/../../spec/factories.rb")
-        10.times do |i|
+        50.times do |i|
           Factory(:issue)
         end
       end
