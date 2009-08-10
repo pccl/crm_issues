@@ -23,6 +23,7 @@ class IssuesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
+      format.js   # show.html.erb
       format.xml { render :xml => @issue }
     end
 
