@@ -3,5 +3,5 @@
 
   %h4 Filter by bug ticket
   %div{ :style => "margin: 0px 0px 6px 0px" }
-    = select_tag("bug_ticket", options_for_select(([""] + Issue.open_tickets), @bug_ticket))
+    = select_tag("bug_ticket", options_for_select(([""] + Issue.open_tickets), @bug_ticket.to_i))
     = observe_field("bug_ticket", :function => "issues.filter_by_bug(value, 'issues')")
