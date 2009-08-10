@@ -12,6 +12,7 @@ class IssuesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.haml
+      format.js   # index.js.rjs
       format.xml  { render :xml => @issues }
     end
   end
