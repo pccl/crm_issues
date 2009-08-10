@@ -491,26 +491,48 @@ describe IssuesController do
   #----------------------------------------------------------------------------
   describe "responding to GET search" do
     before(:each) do
-      @first = Factory(:issue, :user => @current_user, :name => "The first one")
-      @second = Factory(:issue, :user => @current_user, :name => "The second one")
+      @first = Factory(:issue, :user => @current_user, :name => "The first one", :bug_ticket => "111")
+      @second = Factory(:issue, :user => @current_user, :name => "The second one", :bug_ticket => "222")
       @issues = [ @first, @second ]
     end
 
-    it "should perform lookup using query string and redirect to index" do
-      xhr :get, :search, :query => "second"
+    describe "on name" do
+      it "should perform lookup using query string and redirect to index" do
+        xhr :get, :search, :query => "second"
 
-      assigns[:issues].should == [ @second ]
-      assigns[:current_query].should == "second"
-      session[:issues_current_query].should == "second"
-      response.should render_template("index")
+        assigns[:issues].should == [ @second ]
+        assigns[:current_query].should == "second"
+        session[:issues_current_query].should == "second"
+        response.should render_template("index")
+      end
+
+      describe "with mime type of XML" do
+        it "should perform lookup using query string and render XML" do
+          request.env["HTTP_ACCEPT"] = "application/xml"
+          get :search, :query => "second?!"
+
+          response.body.should == [ @second ].to_xml
+        end
+      end
     end
 
-    describe "with mime type of XML" do
-      it "should perform lookup using query string and render XML" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        get :search, :query => "second?!"
+    describe "on bug ticket" do
+      it "should perform lookup using bug_ticket string and redirect to index" do
+        xhr :get, :search, :bug_ticket => "222"
 
-        response.body.should == [ @second ].to_xml
+        assigns[:issues].should == [ @second ]
+        assigns[:current_query].should == "second"
+        session[:issues_current_query].should == "second"
+        response.should render_template("index")
+      end
+
+      describe "with mime type of XML" do
+        it "should perform lookup using query string and render XML" do
+          request.env["HTTP_ACCEPT"] = "application/xml"
+          get :search, :bug_ticket => "222"
+
+          response.body.should == [ @second ].to_xml
+        end
       end
     end
   end
