@@ -1,3 +1,6 @@
+- content_for :javascript do
+  = render :file => "issues/crm_issues.js"
+
 - content_for :styles do
   li.issue .low      { background: gainsboro; color: white; }
   li.issue .minor    { background: thistle; color: white; }

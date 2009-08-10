@@ -1,3 +1,7 @@
 .filters#filters
   = render :partial => "common/search"
 
+  %h4 Filter by bug ticket
+  %div{ :style => "margin: 0px 0px 6px 0px" }
+    = text_field_tag("bug_ticket", @bug_ticket, :size => 23)
+    = observe_field("bug_ticket", :frequency => 0.75, :function => "issues.filter_by_bug(value, 'issues')")
