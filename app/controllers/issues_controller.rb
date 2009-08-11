@@ -149,8 +149,8 @@ class IssuesController < ApplicationController
   # POST /issues/filter                                                    AJAX
   #----------------------------------------------------------------------------
   def filter
-    session[:filter_by_issue_priority] = params[:priority]
-    session[:filter_by_issue_status] = params[:status]
+    session[:filter_by_issue_priority] = params[:priority] if params[:priority]
+    session[:filter_by_issue_status]   = params[:status] if params[:status]
     @issues = get_issues(:page => 1)
     render :action => :index
   end
@@ -206,6 +206,19 @@ class IssuesController < ApplicationController
     end
   end
 
+  def get_data_for_sidebar
+    @issue_priority_total = { :all => Issue.my(@current_user).count }
+    # TODO - store/fetch priorities from Settings
+    ["low", "minor", "major", "critical"].each do |p|
+      @issue_priority_total[p] = Issue.my(@current_user).with_priority(p).count
+    end
+
+    @issue_status_total = { }
+    Issue.allowed_statuses.each do |pair|
+      name, index = pair
+      @issue_status_total[index] = Issue.my(@current_user).with_status(index).count
+    end
+  end
 
   def statuses=(statuses)
     @statuses = session[:statuses] = statuses
@@ -231,17 +244,4 @@ class IssuesController < ApplicationController
     @bug_ticket = params[:bug_ticket] || session[:bug_ticket] || ""
   end
 
-  def get_data_for_sidebar
-    @issue_priority_total = { :all => Issue.my(@current_user).count }
-    # TODO - store/fetch priorities from Settings
-    ["low", "minor", "major", "critical"].each do |p|
-      @issue_priority_total[p] = Issue.my(@current_user).with_priority(p).count
-    end
-
-    @issue_status_total = { }
-    Issue.allowed_statuses.each do |pair|
-      name, index = pair
-      @issue_status_total[index] = Issue.my(@current_user).with_status(index).count
-    end
-  end
 end

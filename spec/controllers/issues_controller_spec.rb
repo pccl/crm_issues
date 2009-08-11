@@ -542,15 +542,46 @@ describe IssuesController do
   #----------------------------------------------------------------------------
   describe "responding to GET filter" do
 
-    it "should expose filtered issues as @issues and render [index] template" do
-      session[:filter_by_issue_priority] = "low,minor"
-      @non_match = Factory(:issue, :priority => "low", :user => @current_user) 
-      @issues = [ Factory(:issue, :priority => "critical", :user => @current_user) ]
+    describe "filter by priority" do
 
-      xhr :get, :filter, :priority => "critical"
-      assigns(:issues).should == @issues
-      response.should be_a_success
-      response.should render_template("issues/index")
+      it "should expose filtered issues as @issues and render [index] template" do
+        session[:filter_by_issue_priority] = "low,minor"
+        @non_match = Factory(:issue, :priority => "low", :user => @current_user) 
+        @issues = [ Factory(:issue, :priority => "critical", :user => @current_user) ]
+
+        xhr :get, :filter, :priority => "critical"
+        assigns(:issues).should == @issues
+        response.should be_a_success
+        response.should render_template("issues/index")
+      end
+    end
+
+    describe "filter by status" do
+
+      it "should expose filtered issues as @issues and render [index] template" do
+        session[:filter_by_issue_status] = "0,1"
+        @non_match = Factory(:issue, :status => 0, :user => @current_user) 
+        @issues = [ Factory(:issue, :status => 2, :user => @current_user) ]
+
+        xhr :get, :filter, :status => 2
+        assigns(:issues).should == @issues
+        response.should be_a_success
+        response.should render_template("issues/index")
+      end
+    end
+
+    describe "filter by priority and status" do
+      it "should expose filtered issues as @issues and render [index] template" do
+        session[:filter_by_issue_status] = "0,1"
+        session[:filter_by_issue_priority] = "low,minor"
+        @non_match = Factory(:issue, :priority => "low", :status => 0, :user => @current_user) 
+        @issues = [ Factory(:issue, :priority => "critical", :status => 2, :user => @current_user) ]
+
+        xhr :get, :filter, :priority => "critical", :status => 2
+        assigns(:issues).should == @issues
+        response.should be_a_success
+        response.should render_template("issues/index")
+      end
     end
   end
 end
