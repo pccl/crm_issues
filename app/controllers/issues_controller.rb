@@ -150,6 +150,7 @@ class IssuesController < ApplicationController
   #----------------------------------------------------------------------------
   def filter
     session[:filter_by_issue_priority] = params[:priority]
+    session[:filter_by_issue_status] = params[:status]
     @issues = get_issues(:page => 1)
     render :action => :index
   end
@@ -172,6 +173,11 @@ class IssuesController < ApplicationController
     full_query = Issue.my(records)
     full_query = full_query.search(current_query)        unless current_query.blank?
     full_query = full_query.with_ticket(bug_ticket)      unless bug_ticket.blank?
+
+    if session[:filter_by_issue_status]
+      self.statuses = session[:filter_by_issue_status].split(",")
+      full_query = full_query.only_statuses(statuses)
+    end
 
     if session[:filter_by_issue_priority]
       self.priorities = session[:filter_by_issue_priority].split(",")
@@ -200,6 +206,14 @@ class IssuesController < ApplicationController
     end
   end
 
+
+  def statuses=(statuses)
+    @statuses = session[:statuses] = statuses
+  end
+
+  def statuses
+    @statuses = params[:statuses] || session[:statuses] || ""
+  end
 
   def priorities=(priorities)
     @priorities = session[:priorities] = priorities

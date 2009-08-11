@@ -16,8 +16,18 @@ module IssuesHelper
   end
 
   def issue_status_checkbox(status, count=0)
-    checked = false
-    check_box_tag("status[]", status, checked)
+
+    if session[:filter_by_issue_status]
+      checked = session[:filter_by_issue_status].split(",").include?(status.to_s)
+    else
+      checked = count > 0
+    end
+
+    check_box_tag("status[]", status, checked,
+      :onclick => remote_function(:url => { :action => :filter }, 
+        :with => %Q/"status=" + $$("input[name='status[]']").findAll(function (el) { return el.checked }).pluck("value")/
+      )
+    )
   end
 
 end

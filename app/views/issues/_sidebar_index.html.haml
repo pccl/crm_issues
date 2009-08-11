@@ -19,6 +19,7 @@
       %b= @issue_priority_total[:all]
     %b Total Issues
 
+  -#TODO - create a class for this header, and style it.
   %h4{ :style => "margin:16px 0 8px 0; border-bottom: 1px solid grey; padding-bottom:2px;" } Filter by status
   - Issue.allowed_statuses.each do |pair|
     - name, index = pair
