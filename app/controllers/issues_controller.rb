@@ -147,10 +147,11 @@ class IssuesController < ApplicationController
 
   private
 
-  def get_issues(options = { :page => nil, :query => nil, :bug_ticket => nil })
+  def get_issues(options = { :page => nil, :query => nil, :bug_ticket => nil, :priorities => nil })
     self.current_page = options[:page] if options[:page]
     self.current_query = options[:query] if options[:query]
     self.bug_ticket = options[:bug_ticket] if options[:bug_ticket]
+    self.priorities = options[:priorities] if options[:priorities]
 
     records = {
       :user => @current_user
@@ -161,8 +162,9 @@ class IssuesController < ApplicationController
     }
 
     full_query = Issue.my(records)
-    full_query = full_query.search(current_query)      unless current_query.blank?
-    full_query = full_query.with_ticket(bug_ticket)    unless bug_ticket.blank?
+    full_query = full_query.search(current_query)        unless current_query.blank?
+    full_query = full_query.with_ticket(bug_ticket)      unless bug_ticket.blank?
+    full_query = full_query.only_priorities(priorities)  unless priorities.blank?
     full_query.paginate(pages)
   end
 
@@ -185,6 +187,14 @@ class IssuesController < ApplicationController
     end
   end
 
+
+  def priorities=(priorities)
+    @priorities = session[:priorities] = priorities
+  end
+
+  def priorities
+    @priorities = params[:priorities] || session[:priorities] || ""
+  end
 
   def bug_ticket=(bug_ticket)
     @bug_ticket = session[:bug_ticket] = bug_ticket
