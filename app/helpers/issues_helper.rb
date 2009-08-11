@@ -15,4 +15,9 @@ module IssuesHelper
     )
   end
 
+  def issue_status_checkbox(status, count=0)
+    checked = false
+    check_box_tag("status[]", status, checked)
+  end
+
 end

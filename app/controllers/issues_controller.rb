@@ -223,5 +223,11 @@ class IssuesController < ApplicationController
     ["low", "minor", "major", "critical"].each do |p|
       @issue_priority_total[p] = Issue.my(@current_user).with_priority(p).count
     end
+
+    @issue_status_total = { }
+    Issue.allowed_statuses.each do |pair|
+      name, index = pair
+      @issue_status_total[index] = Issue.my(@current_user).with_status(index).count
+    end
   end
 end
