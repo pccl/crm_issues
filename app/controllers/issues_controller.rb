@@ -8,6 +8,9 @@ class IssuesController < ApplicationController
   before_filter :set_current_tab, :only => [:index]
   before_filter :get_data_for_sidebar, :only => [:index]
 
+  # GET /issues
+  # GET /issues.xml                                                        HTML
+  #----------------------------------------------------------------------------
   def index
     @issues = get_issues(:page => params[:page])
 
@@ -18,6 +21,9 @@ class IssuesController < ApplicationController
     end
   end
 
+  # GET /issues/1
+  # GET /issues/1.xml                                                      HTML
+  #----------------------------------------------------------------------------
   def show
     @issue = Issue.my(@current_user).find(params[:id])
     @comment = Comment.new
@@ -32,6 +38,9 @@ class IssuesController < ApplicationController
     respond_to_not_found(:html, :xml)
   end
 
+  # GET /issues/new
+  # GET /issues/new.xml                                                    AJAX
+  #----------------------------------------------------------------------------
   def new
     @issue    = Issue.new(:user => @current_user)
     @users    = User.except(@current_user).all
@@ -52,6 +61,8 @@ class IssuesController < ApplicationController
     respond_to_related_not_found(model, :js) if model
   end
 
+  # GET /issues/1/edit                                                     AJAX
+  #----------------------------------------------------------------------------
   def edit
     @issue = Issue.my(@current_user).find(params[:id])
     @users    = User.except(@current_user).all
@@ -71,6 +82,9 @@ class IssuesController < ApplicationController
     respond_to_not_found(:js) unless @issue
   end
 
+  # PUT /issues/1
+  # PUT /issues/1.xml                                                      AJAX
+  #----------------------------------------------------------------------------
   def update
     @issue = Issue.my(@current_user).find(params[:id])
     respond_to do |format|
@@ -96,6 +110,9 @@ class IssuesController < ApplicationController
     respond_to_not_found(:js, :xml)
   end
 
+  # POST /issues
+  # POST /issues.xml                                                       AJAX
+  #----------------------------------------------------------------------------
   def create
     @issue = Issue.new(params[:issue])
 
@@ -125,6 +142,9 @@ class IssuesController < ApplicationController
     end
   end
 
+  # DELETE /issues/1
+  # DELETE /issues/1.xml                                         HTML and AJAX
+  #----------------------------------------------------------------------------
   def destroy
     @issue = Issue.my(@current_user).find(params[:id])
     @issue.destroy if @issue
@@ -137,6 +157,8 @@ class IssuesController < ApplicationController
     respond_to_not_found(:html, :js, :xml)
   end
   
+  # POST /issues/search                                                    AJAX
+  #----------------------------------------------------------------------------
   def search
     @issues = get_issues(:bug_ticket => params[:bug_ticket], :query => params[:query], :page => 1)
 
