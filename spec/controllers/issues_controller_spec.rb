@@ -536,4 +536,21 @@ describe IssuesController do
       end
     end
   end
+
+
+  # GET /issues/filter                                                     AJAX
+  #----------------------------------------------------------------------------
+  describe "responding to GET filter" do
+
+    it "should expose filtered issues as @issues and render [index] template" do
+      session[:filter_by_issue_priority] = "low,minor"
+      @non_match = Factory(:issue, :priority => "low", :user => @current_user) 
+      @issues = [ Factory(:issue, :priority => "critical", :user => @current_user) ]
+
+      xhr :get, :filter, :priority => "critical"
+      assigns(:issues).should == @issues
+      response.should be_a_success
+      response.should render_template("issues/index")
+    end
+  end
 end

@@ -146,13 +146,20 @@ class IssuesController < ApplicationController
     end
   end
 
+  # POST /issues/filter                                                    AJAX
+  #----------------------------------------------------------------------------
+  def filter
+    session[:filter_by_issue_priority] = params[:priority]
+    @issues = get_issues(:page => 1)
+    render :action => :index
+  end
+
   private
 
-  def get_issues(options = { :page => nil, :query => nil, :bug_ticket => nil, :priorities => nil })
-    self.current_page = options[:page] if options[:page]
-    self.current_query = options[:query] if options[:query]
-    self.bug_ticket = options[:bug_ticket] if options[:bug_ticket]
-    self.priorities = options[:priorities] if options[:priorities]
+  def get_issues(options = { :page => nil, :query => nil, :bug_ticket => nil })
+    self.current_page = options[:page]           if options[:page]
+    self.current_query = options[:query]         if options[:query]
+    self.bug_ticket = options[:bug_ticket]       if options[:bug_ticket]
 
     records = {
       :user => @current_user
@@ -165,7 +172,12 @@ class IssuesController < ApplicationController
     full_query = Issue.my(records)
     full_query = full_query.search(current_query)        unless current_query.blank?
     full_query = full_query.with_ticket(bug_ticket)      unless bug_ticket.blank?
-    full_query = full_query.only_priorities(priorities)  unless priorities.blank?
+
+    if session[:filter_by_issue_priority]
+      self.priorities = session[:filter_by_issue_priority].split(",")
+      full_query = full_query.only_priorities(priorities)
+    end
+
     full_query.paginate(pages)
   end
 
