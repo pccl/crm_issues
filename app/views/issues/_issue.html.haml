@@ -9,4 +9,5 @@
     %tt
       &ndash;
       == added #{time_ago_in_words(issue.created_at)} ago by
-      == #{issue.user_id == @current_user.id ? "me" : issue.user.full_name}
+      - unless issue.user.blank?
+        == #{issue.user_id == @current_user.id ? "me" : issue.user.full_name}

@@ -17,7 +17,7 @@
 .remote#create_issue{ hidden }
 
 .list#issues
-  - if @issues.empty?
+  - if @issues.blank?
     = render :partial => "common/empty"
   - else
     = render :partial => "issue", :collection => @issues
