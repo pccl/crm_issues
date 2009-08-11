@@ -6,6 +6,7 @@ class IssuesController < ApplicationController
 
   before_filter :require_user
   before_filter :set_current_tab, :only => [:index]
+  before_filter :get_data_for_sidebar, :only => [:index]
 
   def index
     @issues = get_issues(:page => params[:page])
@@ -202,5 +203,13 @@ class IssuesController < ApplicationController
 
   def bug_ticket
     @bug_ticket = params[:bug_ticket] || session[:bug_ticket] || ""
+  end
+
+  def get_data_for_sidebar
+    @issue_priority_total = { :all => Issue.my(@current_user).count }
+    # TODO - store/fetch priorities from Settings
+    ["low", "minor", "major", "critical"].each do |p|
+      @issue_priority_total[p] = Issue.my(@current_user).with_priority(p).count
+    end
   end
 end

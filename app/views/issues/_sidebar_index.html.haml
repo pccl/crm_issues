@@ -5,3 +5,14 @@
   %div{ :style => "margin: 0px 0px 6px 0px" }
     = select_tag("bug_ticket", options_for_select(([""] + Issue.open_tickets), @bug_ticket.to_i), :style => "width:175px")
     = observe_field("bug_ticket", :function => "issues.filter_by_bug(value, 'issues')")
+  - ["low", "minor", "major", "critical"].each do |priority|
+    .check_box{:style => "border-bottom: 1px silver dotted;"}
+      %div{ :style => "float: right;" }
+        = @issue_priority_total[priority]
+      = issue_priority_checkbox(priority, @issue_priority_total[priority])
+      = priority
+
+  .check_box
+    %div{ :style => "float:right;" }
+      %b= @issue_priority_total[:all]
+    %b Total Issues
