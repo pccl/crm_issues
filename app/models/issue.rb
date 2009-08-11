@@ -29,6 +29,9 @@ class Issue < ActiveRecord::Base
     Issue.unresolved.all.map { |i| i.bug_ticket.to_i }.uniq.sort
   end
 
+  def status_as_slug
+    Issue.allowed_statuses.map{ |s| s.first }[self.status].downcase.gsub(/\s/, '_')
+  end
   def status_in_words
     Issue.allowed_statuses.map{ |s| s.first }[self.status]
   end

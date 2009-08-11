@@ -1,5 +1,9 @@
-%li[issue]{ highlightable(dom_id(issue, :tools)) }
-  .strip{:class => issue.priority}= issue.priority
+%li[issue]{ highlightable(dom_id(issue, :tools)), :class => issue.status_as_slug }
+  .strip{:class => ( [ issue.priority, issue.status_as_slug ].join(" "))}
+    - if issue.status == 1
+      %b= issue.priority + "*"
+    - else
+      = issue.priority 
   %div
     .tools{ invisible, :id => dom_id(issue, :tools) }
       %small
