@@ -27,7 +27,7 @@ class Issue < ActiveRecord::Base
   end
 
   def self.open_tickets
-    Issue.unresolved.all.map { |i| i.bug_ticket.to_i }.uniq.sort
+    Issue.unresolved.all.map { |i| i.bug_ticket.to_i > 0 ? i.bug_ticket.to_i : nil }.compact.uniq.sort
   end
 
   def status_as_slug
