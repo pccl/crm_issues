@@ -1,17 +1,18 @@
 %li[issue]{ highlightable(dom_id(issue, :tools)), :class => issue.status_as_slug }
   .strip{:class => ( [ issue.priority, issue.status_as_slug ].join(" "))}
-    - if issue.status == 1
-      %b= issue.priority + "*"
-    - else
-      = issue.priority 
+    = issue.priority 
   %div
     .tools{ invisible, :id => dom_id(issue, :tools) }
       %small
         = link_to_edit(issue) + " | "
         = link_to_delete(issue) + "&nbsp;"
+    - if issue.status == 1
+      [bug resolved]
     = link_to(issue.name, issue)
     %tt
       &ndash;
       == added #{time_ago_in_words(issue.created_at)} ago by
       - unless issue.user.blank?
         == #{issue.user_id == @current_user.id ? "me" : issue.user.full_name}
+    %dt
+      = [ ( issue.bug_ticket.blank? ? "no ticket" : "ticket: #{link_to_bug_ticket(issue.bug_ticket)}" ), ( "Due on: #{issue.due_on.to_s}" unless issue.due_on.blank? ) ].compact.join(" | ")

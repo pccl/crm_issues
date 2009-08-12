@@ -4,7 +4,7 @@
     %dt= @issue.priority
     %tt Priority:
   %li
-    %dt= @issue.bug_ticket.blank? ? "N/A" : @issue.bug_ticket
+    %dt= @issue.bug_ticket.blank? ? "N/A" : link_to_bug_ticket(@issue.bug_ticket)
     %tt Bug ticket:
   %li
     %dt= @issue.due_on ? @issue.due_on.strftime("%b %e") : "N/A"

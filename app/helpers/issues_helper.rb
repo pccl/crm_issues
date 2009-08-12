@@ -30,4 +30,9 @@ module IssuesHelper
     )
   end
 
+  # TODO- add support for linking to tickets on systems besides bugzilla
+  def link_to_bug_ticket(ticket)
+    link_to ticket, "https://bugzilla.systems.pccl.info/show_bug.cgi?id=#{ticket}", :target => "_blank"
+  end
+
 end
