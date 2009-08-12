@@ -4,6 +4,7 @@ class Issue < ActiveRecord::Base
   belongs_to :assignee, :class_name => "User", :foreign_key => :assigned_to
   has_one    :account_issue, :dependent => :destroy
   has_one    :account, :through => :account_issue
+  has_many   :activities, :as => :subject, :order => 'created_at DESC'
 
   simple_column_search :name, :match => :middle, :escape => lambda { |query| query.gsub(/[^\w\s\-]/, "").strip }
 

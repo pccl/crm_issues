@@ -81,6 +81,7 @@ describe IssuesController do
       it "should update an activity when viewing the issue" # do
         #Activity.should_receive(:log).with(@current_user, @issue, :viewed).once
         #get :show, :id => @issue.id
+        #get :index
       #end
     end
 
