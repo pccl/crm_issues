@@ -177,6 +177,24 @@ class IssuesController < ApplicationController
     render :action => :index
   end
 
+  # POST /issues/resolve_bug                                               HTML
+  #----------------------------------------------------------------------------
+  def resolve_bug
+    @issues = Issue.with_ticket(params[:bug_ticket])
+    count = 0
+    @issues.each do |issue|
+      if issue.status == 0
+        issue.update_attribute(:status, 1) 
+        count += 1
+      end
+    end
+    flash[:notice] = count > 0 ?
+      "#{count} issues have been upgraded to status 'Bug resolved'" :
+      "No unresolved issues could be found with that bug ticket"
+
+    redirect_to :action => :index
+  end
+
   private
 
   def get_issues(options = { :page => nil, :query => nil, :bug_ticket => nil })

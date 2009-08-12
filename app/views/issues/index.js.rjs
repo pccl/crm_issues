@@ -1,5 +1,11 @@
 unless @issues.blank?
   page[:issues].replace_html render(:partial => "issue", :collection => @issues)
+  page[:resolve_bug].replace_html render(:partial => "resolve_bug")
+  if session[:bug_ticket].blank?
+    page[:resolve_bug].hide
+  else
+    page[:resolve_bug].show
+  end
 else
   page[:issues].replace_html render(:partial => "common/empty")
 end

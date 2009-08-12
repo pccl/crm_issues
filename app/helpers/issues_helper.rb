@@ -35,4 +35,12 @@ module IssuesHelper
     link_to ticket, "https://bugzilla.systems.pccl.info/show_bug.cgi?id=#{ticket}", :target => "_blank"
   end
 
+  def show_resolve_bug?
+    if session[:bug_ticket].blank?
+      {:style => "display:none;"}
+    else
+      {:style => "display:block;" }
+    end
+  end
+
 end

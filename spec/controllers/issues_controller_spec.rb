@@ -585,4 +585,19 @@ describe IssuesController do
       end
     end
   end
+
+  describe "resolve issues with bug ticket X" do
+    it "should find issues with specified bug ticket, and promote their status to 'bug resolved'" do
+      @one   = Factory(:issue, :status => 0, :user => @current_user, :bug_ticket => "1234")
+      @two   = Factory(:issue, :status => 0, :user => @current_user, :bug_ticket => "1234")
+      @three = Factory(:issue, :status => 1, :user => @current_user, :bug_ticket => "1234")
+
+      post :resolve_bug, :bug_ticket => "1234"
+      response.should redirect_to(issues_path)
+      flash[:notice].should_not == nil
+      @one.reload.status.should == 1
+      @two.reload.status.should == 1
+      @three.reload.status.should == 1
+    end
+  end
 end
