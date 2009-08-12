@@ -40,6 +40,7 @@ This plugin is not yet finished, but it is usable if you are willing to make mod
 
 **NOTE: the plugin won't work with `cache_classes = false`, which is the default in development mode.**
 
+
 Add issue_id to CommentsController COMMENTABLE
 ----------------------------------------------
 
@@ -52,6 +53,19 @@ Add `issue_id` to this array, so that it looks like this:
     COMMENTABLE = %w(account_id campaign_id contact_id lead_id opportunity_id task_id issue_id).freeze
 
 **TODO: modify this constant when the plugin is loaded.**
+
+
+Load issues_helper in AccountsController
+----------------------------------------
+
+Open the file `app/controllers/accounts_controller.rb`, and insert the following code:
+
+    helper :issues
+
+It doesn't matter too much where you put this, but after the before/after_filters would be a sensible place.
+
+**TODO: load the 'issues_helper' into the 'accounts_controller' when the plugin is loaded.**
+
 
 Add issues to the Account landing page
 --------------------------------------
