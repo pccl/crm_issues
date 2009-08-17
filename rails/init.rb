@@ -1,3 +1,12 @@
+require "fat_free_crm"
+FatFreeCRM::Plugin.register(:fat_free_issues, initializer) do
+          name "Fat Free Issues"
+        author "Drew Neil"
+       version "0.1"
+   description "Basic issue tracking"
+  dependencies :simple_column_search, :uses_mysql_uuid, :uses_user_permissions
+end
+
 require 'fat_free_issues'
 # Tip taken from here:
 #   http://www.spacevatican.org/2008/5/28/reload-me-reload-me-not

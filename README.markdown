@@ -19,12 +19,6 @@ Fat Free Issues can be installed by running:
 
     script/install plugin git://github.com/pccl/fat_free_issues.git
 
-It is important that the Fat Free Issues plugin is loaded after all of the other plugins used by Fat Free CRM. In your `config/environment.rb' file, add the following line:
-
-    config.plugins = [ :all, :fat_free_issues ]
-
-You may need to modify this, if you are using other plugins which are sensitive to the load order, so treat this as a guide.
-
 Then run the following commands:
 
     rake issues:sync
@@ -80,4 +74,4 @@ Open the file `app/views/accounts/show.html.haml`. At the very end of the file, 
     .list#issues
       = render :partial => "issues/issue", :collection => @account.issues
 
-**NOTE: Fat Free CRM does not currently provide any means (so far as I know) for loading content into a view from a plugin. Until it does, this step will remain necessary.**
+**TODO: load this snippet of view code using a callback hook.**
