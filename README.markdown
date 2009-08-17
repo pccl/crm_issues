@@ -1,5 +1,5 @@
-FatFreeIssues
-=============
+CRM Issues
+==========
 
 This plugin is under development, and is not yet ready for use!
 
@@ -15,9 +15,9 @@ each account, after which the issue itself can be marked as resolved.
 Installation
 ============
 
-Fat Free Issues can be installed by running:
+The Issues plugin can be installed by running:
 
-    script/install plugin git://github.com/pccl/fat_free_issues.git
+    script/install plugin git://github.com/pccl/crm_issues.git
 
 Then run the following commands:
 

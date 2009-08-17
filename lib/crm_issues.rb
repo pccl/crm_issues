@@ -1,4 +1,4 @@
-# FatFreeIssues
+# CRM Issues
 
 Account.class_eval do
   include AccountIssueAssociations
