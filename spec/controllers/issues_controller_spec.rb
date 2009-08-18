@@ -24,7 +24,11 @@ describe IssuesController do
       response.should render_template("issues/index")
     end
 
-    it "should expose the data for the issues sidebar"
+    it "should expose the data for the issues sidebar" do
+      get :index
+      ( assigns[:issue_priority_total].keys - ["low", "minor", "major", "critical", :all] ).should == []
+      assigns[:issue_status_total].keys.should == [0,1,2]
+    end
 
     it "should filter out issues by priority"
 
