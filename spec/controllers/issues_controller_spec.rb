@@ -30,8 +30,6 @@ describe IssuesController do
       assigns[:issue_status_total].keys.should == [0,1,2]
     end
 
-    it "should filter out issues by priority"
-
     describe "AJAX pagination" do
       it "should pick up page number from params" do
         @issues = [ Factory(:issue, :user => @current_user) ]
