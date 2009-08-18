@@ -437,7 +437,11 @@ describe IssuesController do
           request.env["HTTP_REFERER"] = "http://localhost/issues"
         end
 
-        it "should get sidebar data"
+        it "should get sidebar data when called from issues index page" do
+          xhr :delete, :destroy, :id => @issue.id
+          assigns(:issue_priority_total).should be_an_instance_of(Hash)
+        end
+
         it "should try previous page and render index action if current page has no issues" do
           session[:issues_current_page] = 42
 

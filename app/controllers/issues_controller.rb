@@ -230,6 +230,7 @@ class IssuesController < ApplicationController
   def respond_to_destroy(method)
     if method == :ajax
       if called_from_index_page?
+        get_data_for_sidebar
         @issues = get_issues
         if @issues.blank?
           @issues = get_issues(:page => current_page - 1) if current_page > 1
