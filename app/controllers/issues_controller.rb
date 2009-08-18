@@ -89,7 +89,7 @@ class IssuesController < ApplicationController
     @issue = Issue.my(@current_user).find(params[:id])
     respond_to do |format|
       if @issue.update_with_account_and_permissions(params)
-        # update_sidebar if called_from_index_page?
+        get_data_for_sidebar if called_from_index_page?
         format.js
       else
         @users = User.except(@current_user).all

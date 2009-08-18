@@ -335,7 +335,13 @@ describe IssuesController do
         response.should render_template("issues/update")
       end
 
-      it "should get sidebar data if called from issues index"
+      it "should get sidebar data if called from issues index" do
+        @issue = Factory(:issue, :id => 42)
+
+        request.env["HTTP_REFERER"] = "http://localhost/issues"
+        xhr :put, :update, :id => 42, :issue => { :name => "Nothing works"}, :account => { :name => "My account" }, :users => %w(1 2 3)
+        assigns(:issue_priority_total).should be_an_instance_of(Hash)
+      end
 
       it "should be able to create an account and associate it with updated issue" do
         @issue = Factory(:issue, :id => 42)
