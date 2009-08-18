@@ -120,7 +120,7 @@ class IssuesController < ApplicationController
       if @issue.save_with_account_and_permissions(params)
         if called_from_index_page?
           @issues = get_issues
-          # update_sidebar 
+          get_data_for_sidebar
         end
         format.js
         format.xml { render :xml => @issue, :status => :created, :location => @issue }

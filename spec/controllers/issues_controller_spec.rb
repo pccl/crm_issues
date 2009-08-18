@@ -254,7 +254,11 @@ describe IssuesController do
         response.should render_template("issues/create")
       end
 
-      it "should get sidebar data if called from issues index" 
+      it "should get sidebar data if called from issues index" do
+        request.env["HTTP_REFERER"] = "http://localhost/issues"
+        xhr :post, :create, :issue => { :name => "Nothing works"}, :account => { :name => "My account" }, :users => %w(1 2 3)
+        assigns(:issue_priority_total).should be_an_instance_of(Hash)
+      end
 
       it "should reload issues to update pagination if called from issues index" do
         request.env["HTTP_REFERER"] = "http://localhost/issues"
