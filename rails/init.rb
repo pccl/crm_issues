@@ -13,7 +13,7 @@ require 'crm_issues'
 # Without this line, development mode has a strange bug where associations
 # between models in the plugin work fine for a single request after restarting
 # the server, but fail to work on subsequent requests.
-ActiveSupport::Dependencies.load_once_paths.delete(File.expand_path(File.dirname(__FILE__))+'/app/models')
+ActiveSupport::Dependencies.load_once_paths.delete(File.expand_path(File.dirname(__FILE__) + '/../app/models'))
 
 if ActiveRecord::Base.connection.tables.include?('settings')
   if tabs = Setting.tabs
