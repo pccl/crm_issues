@@ -12,7 +12,7 @@
   %li
     %dt
       - if account = @issue.account
-        = link_to(truncate(account.name, 30), account, :title => account.name)
+        = link_to(truncate(account.name, 20), account, :title => account.name)
       - else
         N/A
     %tt Account:
