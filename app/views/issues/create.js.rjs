@@ -4,6 +4,17 @@ if @issue.valid?
   page.visual_effect :toggle_blind, :create_issue, :duration => 0.3, :afterFinish => 'function(effect) {effect.element.update("")}'
   page.insert_html :top, :issues, :partial => "issue", :collection => [ @issue ]
   page[dom_id(@issue)].visual_effect :highlight, :duration => 1.5
+  if called_from_index_page?
+    page << refresh_sidebar(:index, :filters)
+    page[:paginate].replace_html render(:partial => "common/paginate")
+  else
+    page[:recently].replace render(:partial => "common/recently")
+  end
   page.call "crm.flick", :empty, :remove
 else
+  page[:create_issue].replace_html :partial => "create"
+  page.call "crm.create_or_select_account", request.referer =~ /\/accounts\// || @account.id.blank?
+  page.call "crm.date_select_popup", "issue_due_on"
+  page[:create_issue].visual_effect :shake, :duration => 0.25, :distance => 6
+  page[:issue_name].focus
 end
