@@ -4,7 +4,7 @@ if @issue.errors.empty?
   if called_from_landing_page?
     page.call "crm.flip_form", :edit_issue
     page.call "crm.set_title", :edit_issue, @issue.name
-    page << refresh_sidebar(:show, :summary)
+    page << refresh_sidebar(:show, :name)
   else
     page[id].replace :partial => "issue", :collection => [ @issue ]
     page[id].visual_effect :highlight, :duration => 1.0
