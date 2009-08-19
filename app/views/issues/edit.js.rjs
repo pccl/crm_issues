@@ -32,4 +32,5 @@ else # <------------------------------------------------- Show edit issue form
   page.call "crm.create_or_select_account", request.referer =~ /\/accounts\// || @account.id.blank?
   page.call "crm.date_select_popup", "issue_due_on"
   page[:issue_name].focus
+
 end
