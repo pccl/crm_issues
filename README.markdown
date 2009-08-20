@@ -1,7 +1,7 @@
 CRM Issues
 ==========
 
-This plugin is under development, and is not yet ready for use!
+**This plugin is under development, and is not yet ready for use!**
 
 The Issues plugin for Fat Free CRM is designed to work in sync with
 a regular bug tracking application (such as Lighthouse, trac or 
@@ -27,25 +27,5 @@ Then run the following commands:
 Then restart your app server.
 
 
-Alterations to Fat Free CRM code
-================================
-
-This plugin is not yet finished, but it is usable if you are willing to make modifications to the code of Fat Free CRM itself. This section details those changes.
-
 **NOTE: the plugin won't work with `cache_classes = false`, which is the default in development mode.**
 
-
-Add issues to the Account landing page
---------------------------------------
-
-Open the file `app/views/accounts/show.html.haml`. At the very end of the file, append the following lines of code:
-
-    -#-----------------------------------------------------------------------------
-    %br
-    = inline :create_issue, new_issue_path, { :class => "subtitle_tools", :related => dom_id(@account) }
-    .subtitle#create_issue_title Issues
-    .remote#create_issue{ hidden }
-    .list#issues
-      = render :partial => "issues/issue", :collection => @account.issues
-
-**TODO: load this snippet of view code using a callback hook.**
