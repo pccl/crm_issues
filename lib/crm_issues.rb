@@ -5,7 +5,7 @@ Dispatcher.to_prepare do
   # Extend :account model to add :issues association.
   Account.send(:include, AccountIssueAssociations)
 
-  # Make issues observable.
+  # Make issues observable. <--- This appear to work only in production mode
   ActivityObserver.instance.send :add_observer!, Issue
 
   # Add :issues plugin helpers.
@@ -17,7 +17,7 @@ end
 # so the :tabs override works in production mode only. (Or in development mode with 
 # config.cache_classes = true.)
 
-# Override :tabs in the application helper.
+# Override :tabs in the application helper. <--- This appear to work only in production mode
 ActionView::Helpers::ApplicationHelper.send(:include, TabsHelper)
 
 # Make the issues commentable.
