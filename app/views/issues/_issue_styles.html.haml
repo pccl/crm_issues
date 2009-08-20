@@ -7,10 +7,3 @@
   li.issue_resolved .minor,   
   li.issue_resolved .major,  
   li.issue_resolved .critical { background: white; color: grey; border: 1px solid #999 }
-
-%br
-= inline :create_issue, new_issue_path, { :class => "subtitle_tools", :related => dom_id(@account) }
-.subtitle#create_issue_title Issues
-.remote#create_issue{ hidden }
-.list#issues
-  = render :partial => "issues/issue", :collection => @account.issues

@@ -1,16 +1,7 @@
 - content_for :javascript do
   = render :file => "issues/crm_issues.js"
 
-- content_for :styles do
-  li.issue .low      { background: gainsboro; color: grey; }
-  li.issue .minor    { background: thistle; color: grey; }
-  li.issue .major    { background: lightcoral; color: white; }
-  li.issue .critical { background: red; color: white; }
-  li.issue_resolved .low,      
-  li.issue_resolved .minor,   
-  li.issue_resolved .major,  
-  li.issue_resolved .critical { background: white; color: grey; border: 1px solid #999 }
-
+= render :partial => 'issue_styles'
 
 .title_tools
   = link_to_inline(:create_issue, new_issue_path)
