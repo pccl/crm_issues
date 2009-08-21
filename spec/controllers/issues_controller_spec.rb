@@ -614,6 +614,8 @@ describe IssuesController do
       @one.reload.status.should == 1
       @two.reload.status.should == 1
       @three.reload.status.should == 1
+      assigns(:bug_ticket).should be_nil
+      session[:bug_ticket].should be_nil
     end
   end
 end

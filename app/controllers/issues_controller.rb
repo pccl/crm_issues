@@ -186,6 +186,7 @@ class IssuesController < ApplicationController
       if issue.status == 0
         issue.update_attribute(:status, 1) 
         count += 1
+        session[:bug_ticket] = nil
       end
     end
     flash[:notice] = count > 0 ?
