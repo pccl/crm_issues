@@ -1,16 +1,8 @@
-- content_for :styles do
-  li.issue .low      { background: gainsboro; color: grey; }
-  li.issue .minor    { background: thistle; color: grey; }
-  li.issue .major    { background: lightcoral; color: white; }
-  li.issue .critical { background: red; color: white; }
-  li.issue_resolved .low,      
-  li.issue_resolved .minor,   
-  li.issue_resolved .major,  
-  li.issue_resolved .critical { background: white; color: grey; border: 1px solid #999 }
+= render :partial => 'issues/issue_styles'
 
 %br
 = inline :create_issue, new_issue_path, { :class => "subtitle_tools", :related => dom_id(@account) }
 .subtitle#create_issue_title Issues
 .remote#create_issue{ hidden }
 .list#issues
-  = render :partial => "issues/issue", :collection => @account.issues
+  = render :partial => "issues/issue", :collection => @account.issues.my(@current_user)
