@@ -1,5 +1,3 @@
--#- require 'ruby-debug'; debugger
 - if !(bug_ticket = session[:bug_ticket] || params[:bug_ticket]).blank?
-  = "Mark ticket #{session[:bug_ticket]} as resolved"
-  = button_to "Resolve Bug #{bug_ticket}", { :action => "resolve_bug", :bug_ticket => bug_ticket }, :method => :post
+  = button_to "Resolve Bug #{bug_ticket}", { :action => "resolve_bug", :bug_ticket => bug_ticket }, :method => :post, :style => "float: left; margin: 8px 0;"
 

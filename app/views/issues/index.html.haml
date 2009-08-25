@@ -11,7 +11,7 @@
   = image_tag("loading.gif", :size => "16x16", :id => "loading", :style => "display: none;")
 .remote#create_issue{ hidden }
 
-#resolve_bug{ show_resolve_bug? }
+#resolve_bug{ show_resolve_bug?, :style => "float:left; width:100%; border-bottom: 1px solid grey; margin-bottom:8px;"}
   = render :partial => "resolve_bug"
 
 .list#issues
