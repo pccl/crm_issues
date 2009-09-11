@@ -17,8 +17,5 @@ end
 # so the :tabs override works in production mode only. (Or in development mode with 
 # config.cache_classes = true.)
 
-# Override :tabs in the application helper. <--- This appear to work only in production mode
-ActionView::Helpers::ApplicationHelper.send(:include, TabsHelper)
-
 # Make the issues commentable.
 CommentsController::COMMENTABLE = CommentsController::COMMENTABLE + %w(issue_id)

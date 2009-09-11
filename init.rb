@@ -6,6 +6,7 @@ FatFreeCRM::Plugin.register(:crm_issues, initializer) do
        version "0.1"
    description "Basic issue tracking"
   dependencies :haml, :simple_column_search, :uses_mysql_uuid, :uses_user_permissions
+  tab :main, :text => "Issues", :url => { :controller => "issues" }
 end
 
 # Require the actual code after all plugin dependencies have been resoved.
