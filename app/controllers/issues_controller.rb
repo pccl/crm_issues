@@ -26,6 +26,7 @@ class IssuesController < ApplicationController
   #----------------------------------------------------------------------------
   def show
     @issue = Issue.my(@current_user).find(params[:id])
+    @current_tab = :issues
     @comment = Comment.new
 
     respond_to do |format|
