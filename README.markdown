@@ -19,13 +19,8 @@ The Issues plugin can be installed by running:
 
     script/install plugin git://github.com/pccl/crm_issues.git
 
-Then run the following commands:
+Then run the following command:
 
-    rake issues:sync
-    rake db:migrate [RAILS_ENV=production]
+    rake db:migrate:plugin NAME=crm_issues
 
-Then restart your app server.
-
-
-**NOTE: the plugin won't work with `cache_classes = false`, which is the default in development mode.**
-
+Then restart your web server.
