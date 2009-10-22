@@ -17,7 +17,7 @@ Installation
 
 The Issues plugin can be installed by running:
 
-    script/install plugin git://github.com/pccl/crm_issues.git
+    script/plugin install git://github.com/pccl/crm_issues.git
 
 Then run the following command:
 
